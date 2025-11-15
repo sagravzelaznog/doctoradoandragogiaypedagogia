@@ -1,202 +1,106 @@
-// Configuración global de Firebase
-const { auth, db, storage } = window;
-
-// Estado global de la aplicación
-const state = {
-    user: null,
-    loading: true,
-    error: null
-};
-
-// Verificar estado de autenticación
-auth.onAuthStateChanged((user) => {
-    state.user = user;
-    state.loading = false;
-    updateUI();
-});
-
-// Actualizar la interfaz de usuario según el estado de autenticación
-function updateUI() {
-    const loginBtn = document.getElementById('login-btn');
-    const logoutBtn = document.getElementById('logout-btn');
-    const userInfo = document.getElementById('user-info');
-    
-    if (state.user) {
-        // Usuario autenticado
-        if (loginBtn) loginBtn.style.display = 'none';
-        if (logoutBtn) logoutBtn.style.display = 'block';
-        if (userInfo) {
-            userInfo.style.display = 'flex';
-            userInfo.querySelector('span').textContent = state.user.displayName || state.user.email;
-        }
-    } else {
-        // Usuario no autenticado
-        if (loginBtn) loginBtn.style.display = 'block';
-        if (logoutBtn) logoutBtn.style.display = 'none';
-        if (userInfo) userInfo.style.display = 'none';
-    }
-}
-
-// Manejador de cierre de sesión
-function handleLogout() {
-    auth.signOut().then(() => {
-        // Cierre de sesión exitoso
-        state.user = null;
-        updateUI();
-    }).catch((error) => {
-        console.error('Error al cerrar sesión:', error);
-        state.error = 'Error al cerrar sesión';
-    });
-}
-
-// Agregar manejador de eventos al botón de cierre de sesión
+// Esperar a que el DOM esté completamente cargado
 document.addEventListener('DOMContentLoaded', () => {
-    const logoutBtn = document.getElementById('logout-btn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', handleLogout);
-    }
-});
-
-// Elementos de la interfaz de usuario
-const uiElements = {
-    loginForm: document.getElementById('loginForm'),
-    registerForm: document.getElementById('registerForm'),
-    logoutBtn: document.getElementById('logoutBtn'),
-    userMenu: document.getElementById('userMenu'),
-    userEmail: document.getElementById('userEmail'),
-    loginBtn: document.getElementById('loginBtn'),
-    authButtons: document.getElementById('authButtons')
-};
-
-// Inicializar la aplicación
-function initApp() {
-    // Verificar estado de autenticación al cargar la página
-    checkAuthState();
-    
-    // Configurar manejadores de eventos
-    setupEventListeners();
-}
-
-// Verificar estado de autenticación
-function checkAuthState() {
-    onAuthStateChanged((user) => {
-        state.user = user;
-        state.loading = false;
-        updateUI();
-    });
-}
-
-// Actualizar la interfaz de usuario según el estado de autenticación
-function updateUI() {
-    if (state.loading) {
-        // Mostrar estado de carga si es necesario
+    // Verificar si Firebase está disponible
+    if (typeof firebase === 'undefined' || !firebase.apps.length) {
+        console.error('Firebase no está correctamente inicializado');
         return;
     }
 
-    if (state.user) {
-        // Usuario autenticado
-        if (uiElements.loginBtn) uiElements.loginBtn.style.display = 'none';
-        if (uiElements.logoutBtn) uiElements.logoutBtn.style.display = 'block';
-        if (uiElements.userMenu) uiElements.userMenu.style.display = 'block';
-        if (uiElements.userEmail && state.user.email) {
-            uiElements.userEmail.textContent = state.user.displayName || state.user.email;
-        }
-    } else {
-        // Usuario no autenticado
-        if (uiElements.loginBtn) uiElements.loginBtn.style.display = 'block';
-        if (uiElements.logoutBtn) uiElements.logoutBtn.style.display = 'none';
-        if (uiElements.userMenu) uiElements.userMenu.style.display = 'none';
-    }
-}
+    // Estado global de la aplicación
+    const appState = {
+        user: null,
+        loading: true,
+        error: null
+    };
 
-// Configurar manejadores de eventos
-function setupEventListeners() {
-    // Inicio de sesión
-    if (uiElements.loginForm) {
-        uiElements.loginForm.addEventListener('submit', handleLogin);
-    }
+    // Referencias a elementos de la interfaz
+    const uiElements = {
+        loginForm: document.getElementById('loginForm'),
+        registerForm: document.getElementById('registerForm'),
+        logoutBtn: document.getElementById('logoutBtn') || document.getElementById('logout-btn'),
+        userMenu: document.getElementById('userMenu'),
+        userEmail: document.getElementById('userEmail'),
+        loginBtn: document.getElementById('loginBtn') || document.getElementById('login-btn'),
+        authButtons: document.getElementById('authButtons'),
+        userInfo: document.getElementById('userInfo')
+    };
 
-    // Registro
-    if (uiElements.registerForm) {
-        uiElements.registerForm.addEventListener('submit', handleRegister);
+    // Inicializar la aplicación
+    function initApp() {
+        setupEventListeners();
+        checkAuthState();
     }
 
-    // Cerrar sesión
-    if (uiElements.logoutBtn) {
-        uiElements.logoutBtn.addEventListener('click', handleLogout);
+    // Verificar estado de autenticación
+    function checkAuthState() {
+        firebase.auth().onAuthStateChanged((user) => {
+            appState.user = user;
+            appState.loading = false;
+            updateUI(user);
+        });
     }
 
-    // Botón de Google
-    const googleLoginBtn = document.getElementById('googleLoginBtn');
-    if (googleLoginBtn) {
-        googleLoginBtn.addEventListener('click', handleGoogleLogin);
-    }
-
-    // Restablecer contraseña
-    const forgotPasswordLink = document.getElementById('forgotPasswordLink');
-    if (forgotPasswordLink) {
-        forgotPasswordLink.addEventListener('click', handleForgotPassword);
-    }
-}
-
-// Manejador de inicio de sesión
-async function handleLogin(e) {
-    e.preventDefault();
-    
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const errorElement = document.getElementById('loginError');
-
-    try {
-        const { success, user, error } = await loginWithEmail(email, password);
-        
-        if (success) {
-            // Redirigir al dashboard
-            window.location.href = 'dashboard.html';
-        } else {
-            if (errorElement) {
-                errorElement.textContent = error;
-                errorElement.style.display = 'block';
+    // Actualizar la interfaz de usuario según el estado de autenticación
+    function updateUI(user) {
+        if (user) {
+            // Usuario autenticado
+            if (uiElements.userEmail) {
+                uiElements.userEmail.textContent = user.email;
             }
-        }
-    } catch (error) {
-        console.error('Error al iniciar sesión:', error);
-        if (errorElement) {
-            errorElement.textContent = 'Ocurrió un error al iniciar sesión. Por favor, inténtalo de nuevo.';
-            errorElement.style.display = 'block';
-        }
-    }
-}
-
-// Manejador de registro
-async function handleRegister(e) {
-    e.preventDefault();
-    
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const displayName = document.getElementById('displayName').value;
-    const errorElement = document.getElementById('registerError');
-    const successElement = document.getElementById('registerSuccess');
-
-    try {
-        const { success, user, error } = await registerWithEmail(email, password, displayName);
-        
-        if (success) {
-            if (successElement) {
-                successElement.textContent = '¡Registro exitoso! Por favor, verifica tu correo electrónico.';
-                successElement.style.display = 'block';
-                
-                // Limpiar el formulario
-                e.target.reset();
-                
-                // Redirigir después de 3 segundos
-                setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 3000);
+            if (uiElements.userMenu) {
+                uiElements.userMenu.style.display = 'block';
+            }
+            if (uiElements.authButtons) {
+                uiElements.authButtons.style.display = 'none';
+            }
+            if (uiElements.logoutBtn) {
+                uiElements.logoutBtn.style.display = 'block';
+            }
+            if (uiElements.loginBtn) {
+                uiElements.loginBtn.style.display = 'none';
+            }
+            if (uiElements.userInfo) {
+                uiElements.userInfo.style.display = 'flex';
+                const userName = uiElements.userInfo.querySelector('span');
+                if (userName) {
+                    userName.textContent = user.displayName || user.email;
+                }
             }
         } else {
-            if (errorElement) {
-                errorElement.textContent = error;
+            // Usuario no autenticado
+            if (uiElements.userMenu) {
+                uiElements.userMenu.style.display = 'none';
+            }
+            if (uiElements.authButtons) {
+                uiElements.authButtons.style.display = 'block';
+            }
+            if (uiElements.logoutBtn) {
+                uiElements.logoutBtn.style.display = 'none';
+            }
+            if (uiElements.loginBtn) {
+                uiElements.loginBtn.style.display = 'block';
+            }
+            if (uiElements.userInfo) {
+                uiElements.userInfo.style.display = 'none';
+            }
+        }
+    }
+
+    // Configurar manejadores de eventos
+    function setupEventListeners() {
+        // Inicio de sesión
+        if (uiElements.loginForm) {
+            uiElements.loginForm.addEventListener('submit', handleLogin);
+        }
+        
+        // Registro
+        if (uiElements.registerForm) {
+            uiElements.registerForm.addEventListener('submit', handleRegister);
+        }
+        
+        // Cierre de sesión
+        if (uiElements.logoutBtn) {
+            uiElements.logoutBtn.addEventListener('click', handleLogout);
                 errorElement.style.display = 'block';
             }
         }

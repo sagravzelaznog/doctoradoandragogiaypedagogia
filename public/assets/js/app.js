@@ -1,16 +1,5 @@
-// Importar la configuración de Firebase
-import { auth } from './config/firebase-config.js';
-import { 
-    registerWithEmail, 
-    loginWithEmail, 
-    logout, 
-    loginWithGoogle,
-    resetPassword,
-    updateUserProfile,
-    getCurrentUser,
-    isAuthenticated,
-    onAuthStateChanged
-} from './services/authService.js';
+// Configuración global de Firebase
+const { auth, db, storage } = window;
 
 // Estado global de la aplicación
 const state = {
@@ -18,6 +7,55 @@ const state = {
     loading: true,
     error: null
 };
+
+// Verificar estado de autenticación
+auth.onAuthStateChanged((user) => {
+    state.user = user;
+    state.loading = false;
+    updateUI();
+});
+
+// Actualizar la interfaz de usuario según el estado de autenticación
+function updateUI() {
+    const loginBtn = document.getElementById('login-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const userInfo = document.getElementById('user-info');
+    
+    if (state.user) {
+        // Usuario autenticado
+        if (loginBtn) loginBtn.style.display = 'none';
+        if (logoutBtn) logoutBtn.style.display = 'block';
+        if (userInfo) {
+            userInfo.style.display = 'flex';
+            userInfo.querySelector('span').textContent = state.user.displayName || state.user.email;
+        }
+    } else {
+        // Usuario no autenticado
+        if (loginBtn) loginBtn.style.display = 'block';
+        if (logoutBtn) logoutBtn.style.display = 'none';
+        if (userInfo) userInfo.style.display = 'none';
+    }
+}
+
+// Manejador de cierre de sesión
+function handleLogout() {
+    auth.signOut().then(() => {
+        // Cierre de sesión exitoso
+        state.user = null;
+        updateUI();
+    }).catch((error) => {
+        console.error('Error al cerrar sesión:', error);
+        state.error = 'Error al cerrar sesión';
+    });
+}
+
+// Agregar manejador de eventos al botón de cierre de sesión
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', handleLogout);
+    }
+});
 
 // Elementos de la interfaz de usuario
 const uiElements = {

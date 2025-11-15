@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Plataforma de Aprendizaje Andragógico</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    
+    <style>
+        .register-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+        
+        .register-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .register-header i {
+            font-size: 3rem;
+            color: #0d6efd;
+            margin-bottom: 15px;
+        }
+        
+        .form-step {
+            display: none;
+        }
+        
+        .form-step.active {
+            display: block;
+        }
+        
+        .progress {
+            height: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .btn-next, .btn-submit {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="../../index.html">Andragogía Digital</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cursos.html">Cursos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="tutoriales.html">Tutoriales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="tutorias.html">Tutorías</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="acerca.html">Acerca de</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacto.html">Contacto</a>
+                    </li>
+                </ul>
+                <div class="d-flex" id="authButtons">
+                    <a href="login.html" class="btn btn-outline-light me-2" id="loginBtn">Iniciar sesión</a>
+                    <a href="registro.html" class="btn btn-light">Registrarse</a>
+                </div>
+                <div class="dropdown" id="userMenu" style="display: none;">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle"></i> <span id="userEmail"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="perfil.html">Mi perfil</a></li>
+                        <li><a class="dropdown-item" href="dashboard.html">Panel de control</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" id="logoutBtn">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container">
+        <div class="register-container">
+            <div class="register-header">
+                <i class="fas fa-user-plus"></i>
+                <h2>Crear una cuenta</h2>
+                <p class="text-muted">Únete a nuestra comunidad de aprendizaje</p>
+            </div>
+            
+            <!-- Barra de progreso -->
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            
+            <!-- Formulario de registro -->
+            <form id="registerForm">
+                <!-- Paso 1: Información personal -->
+                <div class="form-step active" id="step1">
+                    <h4 class="mb-4">Información personal</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="firstName" class="form-label">Nombre(s)</label>
+                            <input type="text" class="form-control" id="firstName" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="lastName" class="form-label">Apellidos</label>
+                            <input type="text" class="form-control" id="lastName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo electrónico</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Teléfono</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                            <input type="tel" class="form-control" id="phone">
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary btn-next" onclick="nextStep(1)">Siguiente</button>
+                </div>
+                
+                <!-- Paso 2: Credenciales -->
+                <div class="form-step" id="step2">
+                    <h4 class="mb-4">Credenciales de acceso</h4>
+                    
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nombre de usuario</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" id="username" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" id="password" required>
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="form-text">La contraseña debe tener al menos 8 caracteres, incluyendo mayúsculas, minúsculas y números.</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="confirmPassword" class="form-label">Confirmar contraseña</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary" onclick="prevStep(2)">Anterior</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep(2)">Siguiente</button>
+                    </div>
+                </div>
+                
+                <!-- Paso 3: Intereses y términos -->
+                <div class="form-step" id="step3">
+                    <h4 class="mb-4">Intereses y términos</h4>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">Áreas de interés (selecciona al menos una)</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="evaluacion" id="interes1">
+                            <label class="form-check-label" for="interes1">
+                                Estrategias de evaluación
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="tecnologia" id="interes2">
+                            <label class="form-check-label" for="interes2">
+                                Tecnología educativa
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="inclusion" id="interes3">
+                            <label class="form-check-label" for="interes3">
+                                Educación inclusiva
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="tutorias" id="interes4">
+                            <label class="form-check-label" for="interes4">
+                                Tutorías
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="terms" required>
+                            <label class="form-check-label" for="terms">
+                                Acepto los <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Términos y condiciones</a> y la <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Política de privacidad</a>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary" onclick="prevStep(3)">Anterior</button>
+                        <button type="submit" class="btn btn-success btn-submit">
+                            <i class="fas fa-user-plus me-2"></i> Crear cuenta
+                        </button>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="text-center mt-4">
+                <p class="mb-0">¿Ya tienes una cuenta? <a href="login.html" class="text-decoration-none">Inicia sesión</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Términos y condiciones -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Términos y condiciones</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>1. Aceptación de los términos</h6>
+                    <p>Al acceder y utilizar la Plataforma de Aprendizaje Andragógico, usted acepta cumplir con estos términos y condiciones.</p>
+                    
+                    <h6>2. Uso de la plataforma</h6>
+                    <p>La plataforma está diseñada para fines educativos y de desarrollo profesional. No está permitido su uso con fines ilegales o no autorizados.</p>
+                    
+                    <h6>3. Cuenta de usuario</h6>
+                    <p>Usted es responsable de mantener la confidencialidad de su cuenta y contraseña, y de restringir el acceso a su dispositivo.</p>
+                    
+                    <h6>4. Propiedad intelectual</h6>
+                    <p>Todos los derechos de propiedad intelectual del contenido de la plataforma son propiedad de sus respectivos dueños.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Política de privacidad -->
+    <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="privacyModalLabel">Política de privacidad</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>1. Información que recopilamos</h6>
+                    <p>Recopilamos información que usted nos proporciona al registrarse, como nombre, correo electrónico y otra información de contacto.</p>
+                    
+                    <h6>2. Uso de la información</h6>
+                    <p>Utilizamos su información para proporcionar y mejorar nuestros servicios, comunicarnos con usted y personalizar su experiencia.</p>
+                    
+                    <h6>3. Protección de datos</h6>
+                    <p>Implementamos medidas de seguridad para proteger su información personal contra el acceso no autorizado o la divulgación.</p>
+                    
+                    <h6>4. Cookies y tecnologías similares</h6>
+                    <p>Utilizamos cookies para mejorar su experiencia en nuestro sitio web y analizar el tráfico del mismo.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie de página -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Plataforma de Aprendizaje Andragógico</h5>
+                    <p>Desarrollado para fortalecer la formación docente y el aprendizaje continuo.</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Enlaces rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="../../index.html" class="text-white">Inicio</a></li>
+                        <li><a href="cursos.html" class="text-white">Cursos</a></li>
+                        <li><a href="tutoriales.html" class="text-white">Tutoriales</a></li>
+                        <li><a href="contacto.html" class="text-white">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Contacto</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope me-2"></i> info@andragogia.edu</li>
+                        <li><i class="fas fa-phone me-2"></i> +52 123 456 7890</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p class="mb-0">&copy; 2023 Plataforma de Aprendizaje Andragógico. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS y dependencias -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Scripts personalizados -->
+    <script type="module" src="../../assets/js/app.js"></script>
+    <script>
+        // Variables globales
+        let currentStep = 1;
+        const totalSteps = 3;
+        
+        // Función para mostrar/ocultar contraseña
+        document.getElementById('togglePassword')?.addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+        
+        // Función para avanzar al siguiente paso
+        function nextStep(step) {
+            // Validar el paso actual antes de avanzar
+            if (!validateStep(step)) {
+                return;
+            }
+            
+            // Ocultar el paso actual
+            document.getElementById(`step${step}`).classList.remove('active');
+            
+            // Mostrar el siguiente paso
+            currentStep = step + 1;
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            
+            // Actualizar la barra de progreso
+            updateProgressBar();
+        }
+        
+        // Función para volver al paso anterior
+        function prevStep(step) {
+            // Ocultar el paso actual
+            document.getElementById(`step${step}`).classList.remove('active');
+            
+            // Mostrar el paso anterior
+            currentStep = step - 1;
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            
+            // Actualizar la barra de progreso
+            updateProgressBar();
+        }
+        
+        // Función para validar el paso actual
+        function validateStep(step) {
+            if (step === 1) {
+                const email = document.getElementById('email').value;
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                
+                if (!firstName || !lastName || !email) {
+                    alert('Por favor completa todos los campos obligatorios.');
+                    return false;
+                }
+                
+                // Validar formato de correo electrónico
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert('Por favor ingresa un correo electrónico válido.');
+                    return false;
+                }
+                
+                return true;
+            } else if (step === 2) {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (!username || !password || !confirmPassword) {
+                    alert('Por favor completa todos los campos.');
+                    return false;
+                }
+                
+                if (password.length < 8) {
+                    alert('La contraseña debe tener al menos 8 caracteres.');
+                    return false;
+                }
+                
+                if (password !== confirmPassword) {
+                    alert('Las contraseñas no coinciden.');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            return true;
+        }
+        
+        // Función para actualizar la barra de progreso
+        function updateProgressBar() {
+            const progress = (currentStep / totalSteps) * 100;
+            const progressBar = document.querySelector('.progress-bar');
+            if (progressBar) {
+                progressBar.style.width = `${progress}%`;
+                progressBar.setAttribute('aria-valuenow', progress);
+            }
+        }
+        
+        // Manejar el envío del formulario
+        document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Validar el último paso
+            if (!validateStep(3)) {
+                return;
+            }
+            
+            // Verificar que se acepten los términos
+            if (!document.getElementById('terms').checked) {
+                alert('Debes aceptar los términos y condiciones para continuar.');
+                return;
+            }
+            
+            // Aquí iría la lógica de registro con Firebase
+            try {
+                // Simular registro exitoso
+                console.log('Registrando usuario...');
+                
+                // Redirigir al dashboard después del registro
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                console.error('Error al registrar el usuario:', error);
+                alert('Ocurrió un error al registrar el usuario. Por favor, inténtalo de nuevo.');
+            }
+        });
+        
+        // Inicializar la barra de progreso
+        document.addEventListener('DOMContentLoaded', () => {
+            updateProgressBar();
+        });
+    </script>
+</body>
+</html>

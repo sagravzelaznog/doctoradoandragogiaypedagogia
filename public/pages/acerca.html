@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acerca de - Plataforma de Aprendizaje Andragógico</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    
+    <style>
+        /* Estilos para la sección hero */
+        .hero-section {
+            background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+            color: white;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Estilos para las tarjetas de características */
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            height: 100%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(13, 110, 253, 0.1);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(13, 110, 253, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: #0d6efd;
+            font-size: 1.8rem;
+        }
+        
+        .feature-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #343a40;
+        }
+        
+        .feature-text {
+            color: #6c757d;
+            line-height: 1.7;
+        }
+        
+        /* Estilos para la sección de historia */
+        .about-section {
+            padding: 100px 0;
+            background-color: #f8f9fa;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            color: #0d6efd;
+            font-weight: 700;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 3px;
+            background-color: #0d6efd;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title p {
+            color: #6c757d;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+        }
+        
+        .about-text {
+            padding-right: 30px;
+        }
+        
+        .about-text h3 {
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #343a40;
+        }
+        
+        .about-text p {
+            color: #6c757d;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .about-image {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.5s ease;
+        }
+        
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .about-stats {
+            margin-top: 50px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0d6efd;
+            margin-bottom: 10px;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        /* Estilos para el equipo */
+        .team-section {
+            padding: 100px 0;
+            background-color: white;
+        }
+        
+        .team-member {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .team-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            border: 5px solid #f8f9fa;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .team-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .team-member:hover .team-image {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(13, 110, 253, 0.2);
+        }
+        
+        .team-info h4 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            color: #343a40;
+        }
+        
+        .team-info p {
+            color: #6c757d;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .social-link {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background-color: #0d6efd;
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        /* Estilos para los valores */
+        .values-section {
+            padding: 100px 0;
+            background-color: #f8f9fa;
+        }
+        
+        .value-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            height: 100%;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(13, 110, 253, 0.1);
+        }
+        
+        .value-icon {
+            font-size: 2.5rem;
+            color: #0d6efd;
+            margin-bottom: 20px;
+        }
+        
+        .value-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #343a40;
+        }
+        
+        .value-text {
+            color: #6c757d;
+            line-height: 1.7;
+        }
+        
+        /* Estilos para el CTA */
+        .cta-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .cta-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        
+        .cta-text {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        
+        .btn-cta {
+            background-color: white;
+            color: #0d6efd;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+        }
+        
+        .btn-cta:hover {
+            background-color: transparent;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline-cta {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            margin-left: 15px;
+        }
+        
+        .btn-outline-cta:hover {
+            background-color: white;
+            color: #0d6efd;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Estilos responsivos */
+        @media (max-width: 991.98px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .about-text {
+                padding-right: 0;
+                margin-bottom: 30px;
+            }
+            
+            .about-image {
+                margin-top: 30px;
+            }
+            
+            .cta-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn-outline-cta {
+                margin-left: 0;
+            }
+        }
+        
+        @media (max-width: 767.98px) {
+            .hero-section {
+                padding: 80px 0;
+            }
+            
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .cta-title {
+                font-size: 1.8rem;
+            }
+            
+            .cta-text {
+                font-size: 1rem;
+            }
+            
+            .btn-cta, .btn-outline-cta {
+                padding: 10px 20px;
+                font-size: 0.85rem;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+        
+        @media (max-width: 575.98px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.6rem;
+            }
+            
+            .feature-card, .value-card {
+                padding: 20px 15px;
+            }
+            
+            .team-image {
+                width: 160px;
+                height: 160px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="../../index.html">Andragogía Digital</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cursos.html">Cursos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="tutoriales.html">Tutoriales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="tutorias.html">Tutorías</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="acerca.html">Acerca de</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacto.html">Contacto</a>
+                    </li>
+                </ul>
+                <div class="d-flex" id="authButtons">
+                    <a href="login.html" class="btn btn-outline-light me-2" id="loginBtn">Iniciar sesión</a>
+                    <a href="registro.html" class="btn btn-light">Registrarse</a>
+                </div>
+                <div class="dropdown" id="userMenu" style="display: none;">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle"></i> <span id="userEmail"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="perfil.html">Mi perfil</a></li>
+                        <li><a class="dropdown-item" href="dashboard.html">Panel de control</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" id="logoutBtn">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-10">
+                    <div class="hero-content">
+                        <h1 class="hero-title" data-aos="fade-up">Impulsando el aprendizaje a lo largo de la vida</h1>
+                        <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="100">En Andragogía Digital, creemos en el poder transformador de la educación continua y en el potencial ilimitado de cada estudiante adulto.</p>
+                        <div data-aos="fade-up" data-aos-delay="200">
+                            <a href="#nuestra-historia" class="btn btn-light btn-lg me-2">Conócenos</a>
+                            <a href="registro.html" class="btn btn-outline-light btn-lg">Empieza ahora</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Características principales -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="feature-title">Aprendizaje Personalizado</h3>
+                        <p class="feature-text">Cursos diseñados específicamente para estudiantes adultos, con enfoque en la experiencia práctica y aplicable a la vida real.</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="feature-title">Comunidad Activa</h3>
+                        <p class="feature-text">Únete a una red de profesionales y estudiantes comprometidos con el aprendizaje continuo y el crecimiento personal.</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <h3 class="feature-title">Instructores Expertos</h3>
+                        <p class="feature-text">Aprende de profesionales con amplia experiencia en educación de adultos y en sus respectivas áreas de conocimiento.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nuestra Historia -->
+    <section class="about-section" id="nuestra-historia">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Nuestra Historia</h2>
+                <p>Conoce cómo comenzó nuestro viaje y qué nos impulsa a innovar en la educación para adultos</p>
+            </div>
+            
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="about-text">
+                        <h3>De la pasión por enseñar a la innovación educativa</h3>
+                        <p>Fundada en 2020, Andragogía Digital nació de la visión compartida de un grupo de educadores y tecnólogos comprometidos con transformar la educación para adultos. Lo que comenzó como un pequeño proyecto educativo se ha convertido en una plataforma líder en aprendizaje andragógico en línea.</p>
+                        <p>Nuestro enfoque único combina los principios de la andragogía con las últimas tecnologías educativas, creando experiencias de aprendizaje significativas y efectivas para estudiantes adultos en todo el mundo.</p>
+                        <p>Hoy, seguimos comprometidos con nuestra misión de hacer que el aprendizaje permanente sea accesible, relevante y transformador para todos.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="about-image">
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Equipo de Andragogía Digital" class="img-fluid rounded">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="about-stats">
+                <div class="row text-center">
+                    <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="100">
+                        <div class="stat-item">
+                            <div class="stat-number" data-count="5000">0</div>
+                            <div class="stat-label">Estudiantes</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="200">
+                        <div class="stat-item">
+                            <div class="stat-number" data-count="150">0</div>
+                            <div class="stat-label">Cursos</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="300">
+                        <div class="stat-item">
+                            <div class="stat-number" data-count="50">0</div>
+                            <div class="stat-label">Instructores</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="400">
+                        <div class="stat-item">
+                            <div class="stat-number" data-count="98">0</div>
+                            <div class="stat-label">% Satisfacción</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nuestro Equipo -->
+    <section class="team-section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Conoce a Nuestro Equipo</h2>
+                <p>Profesionales apasionados por la educación y comprometidos con tu éxito</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="team-member">
+                        <div class="team-image">
+                            <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Dra. Ana Martínez">
+                        </div>
+                        <div class="team-info">
+                            <h4>Dra. Ana Martínez</h4>
+                            <p>Directora Académica</p>
+                            <div class="social-links">
+                                <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="team-member">
+                        <div class="team-image">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Dr. Carlos Rodríguez">
+                        </div>
+                        <div class="team-info">
+                            <h4>Dr. Carlos Rodríguez</h4>
+                            <p>Director de Tecnología</p>
+                            <div class="social-links">
+                                <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="team-member">
+                        <div class="team-image">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Mtra. Laura Sánchez">
+                        </div>
+                        <div class="team-info">
+                            <h4>Mtra. Laura Sánchez</h4>
+                            <p>Coordinadora de Contenidos</p>
+                            <div class="social-links">
+                                <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="team-member">
+                        <div class="team-image">
+                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Lic. Javier López">
+                        </div>
+                        <div class="team-info">
+                            <h4>Lic. Javier López</h4>
+                            <p>Director de Experiencia de Usuario</p>
+                            <div class="social-links">
+                                <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-dribbble"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nuestros Valores -->
+    <section class="values-section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Nuestros Valores</h2>
+                <p>Principios fundamentales que guían nuestro trabajo diario</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3 class="value-title">Enfoque en el Estudiante</h3>
+                        <p class="value-text">Colocamos las necesidades, experiencias y aspiraciones de nuestros estudiantes adultos en el centro de todo lo que hacemos.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3 class="value-title">Innovación Continua</h3>
+                        <p class="value-text">Buscamos constantemente nuevas formas de mejorar y enriquecer la experiencia de aprendizaje de nuestros estudiantes.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <h3 class="value-title">Compromiso Social</h3>
+                        <p class="value-text">Creemos en el poder de la educación para transformar vidas y comunidades, promoviendo la equidad y la inclusión.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="value-title">Excelencia Académica</h3>
+                        <p class="value-text">Mantenemos los más altos estándares de calidad en todos nuestros programas y contenidos educativos.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3 class="value-title">Pasión por Enseñar</h3>
+                        <p class="value-text">Nuestro equipo está impulsado por un genuino amor por la enseñanza y el aprendizaje continuo.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-globe-americas"></i>
+                        </div>
+                        <h3 class="value-title">Visión Global</h3>
+                        <p class="value-text">Preparamos a nuestros estudiantes para sobresalir en un mundo cada vez más interconectado y diverso.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title" data-aos="fade-up">¿Listo para comenzar tu viaje de aprendizaje?</h2>
+                <p class="cta-text" data-aos="fade-up" data-aos-delay="100">Únete a miles de estudiantes que ya están transformando sus vidas a través de la educación continua.</p>
+                <div class="cta-buttons" data-aos="fade-up" data-aos-delay="200">
+                    <a href="registro.html" class="btn btn-cta">Crear cuenta gratuita</a>
+                    <a href="cursos.html" class="btn btn-outline-cta">Explorar cursos</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pie de página -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="text-uppercase mb-4">Andragogía Digital</h5>
+                    <p>Plataforma de aprendizaje en línea especializada en educación para adultos. Ofrecemos cursos, tutoriales y tutorías personalizadas para tu desarrollo profesional y personal.</p>
+                    <div class="social-links justify-content-start">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="text-uppercase mb-4">Enlaces rápidos</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="../../index.html" class="text-white-50 text-decoration-none">Inicio</a></li>
+                        <li class="mb-2"><a href="cursos.html" class="text-white-50 text-decoration-none">Cursos</a></li>
+                        <li class="mb-2"><a href="tutoriales.html" class="text-white-50 text-decoration-none">Tutoriales</a></li>
+                        <li class="mb-2"><a href="tutorias.html" class="text-white-50 text-decoration-none">Tutorías</a></li>
+                        <li class="mb-2"><a href="acerca.html" class="text-white text-decoration-none">Acerca de</a></li>
+                        <li><a href="contacto.html" class="text-white-50 text-decoration-none">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="text-uppercase mb-4">Categorías</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Educación</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Tecnología</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Idiomas</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Negocios</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Desarrollo Personal</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Más categorías</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <h6 class="text-uppercase mb-4">Boletín informativo</h6>
+                    <p class="text-white-50">Suscríbete para recibir noticias y actualizaciones.</p>
+                    <form class="mb-3">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Tu correo" aria-label="Tu correo" required>
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <p class="small text-white-50 mb-0">Al suscribirte, aceptas nuestra <a href="#" class="text-white">Política de Privacidad</a>.</p>
+                </div>
+            </div>
+            
+            <hr class="my-4 bg-light">
+            
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0 small">&copy; 2023 Andragogía Digital. Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-white-50 text-decoration-none small me-3">Términos de servicio</a>
+                    <a href="#" class="text-white-50 text-decoration-none small me-3">Política de privacidad</a>
+                    <a href="#" class="text-white-50 text-decoration-none small">Mapa del sitio</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script type="module" src="../../assets/js/app.js"></script>
+    
+    <script>
+        // Inicializar AOS (Animate On Scroll)
+        AOS.init({
+            duration: 800,
+            once: true,
+            easing: 'ease-in-out'
+        });
+        
+        // Contador de estadísticas
+        document.addEventListener('DOMContentLoaded', function() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            
+            const animateValue = (obj, start, end, duration) => {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    const value = Math.floor(progress * (end - start) + start);
+                    obj.textContent = value;
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target;
+                        const finalValue = parseInt(target.getAttribute('data-count'));
+                        const suffix = target.textContent.includes('%') ? '%' : '';
+                        
+                        // Detener la observación después de la primera vez
+                        observer.unobserve(target);
+                        
+                        // Iniciar la animación
+                        animateValue(target, 0, finalValue, 2000);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            // Observar cada número de estadística
+            statNumbers.forEach(stat => {
+                observer.observe(stat);
+            });
+            
+            // Verificar el estado de autenticación
+            firebase.auth().onAuthStateChanged(function(user) {
+                const authButtons = document.getElementById('authButtons');
+                const userMenu = document.getElementById('userMenu');
+                const userEmail = document.getElementById('userEmail');
+                
+                if (user) {
+                    // Usuario ha iniciado sesión
+                    if (authButtons) authButtons.style.display = 'none';
+                    if (userMenu) userMenu.style.display = 'block';
+                    if (userEmail) userEmail.textContent = user.email;
+                } else {
+                    // Usuario no ha iniciado sesión
+                    if (authButtons) authButtons.style.display = 'flex';
+                    if (userMenu) userMenu.style.display = 'none';
+                }
+            });
+            
+            // Manejar cierre de sesión
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    firebase.auth().signOut().then(() => {
+                        // Cierre de sesión exitoso
+                        window.location.href = '../../index.html';
+                    }).catch((error) => {
+                        console.error('Error al cerrar sesión:', error);
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

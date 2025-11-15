@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - Plataforma de Aprendizaje Andragógico</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --header-height: 60px;
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --success-color: #198754;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --light-bg: #f8f9fa;
+            --dark-bg: #212529;
+            --border-color: #dee2e6;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--dark-bg);
+            color: white;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left-color: var(--primary-color);
+        }
+        
+        .sidebar-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .sidebar-menu .badge {
+            margin-left: auto;
+            background: var(--primary-color);
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 20px;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+        
+        /* Header Styles */
+        .top-navbar {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .search-box {
+            position: relative;
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .search-box input {
+            padding-left: 40px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            width: 100%;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .notification-icon, .message-icon {
+            position: relative;
+            margin-right: 20px;
+            color: var(--secondary-color);
+            cursor: pointer;
+        }
+        
+        .notification-badge, .message-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+        
+        .user-name {
+            font-weight: 500;
+            margin-right: 5px;
+        }
+        
+        /* Dashboard Cards */
+        .dashboard-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .card-icon.primary {
+            background: linear-gradient(45deg, #0d6efd, #6ea8fe);
+        }
+        
+        .card-icon.success {
+            background: linear-gradient(45deg, #198754, #75b798);
+        }
+        
+        .card-icon.warning {
+            background: linear-gradient(45deg, #ffc107, #ffda6a);
+        }
+        
+        .card-icon.danger {
+            background: linear-gradient(45deg, #dc3545, #ea868f);
+        }
+        
+        .card-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 10px 0;
+            color: var(--dark-bg);
+        }
+        
+        .card-label {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+        
+        .card-change {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+        
+        .card-change.increase {
+            color: var(--success-color);
+        }
+        
+        .card-change.decrease {
+            color: var(--danger-color);
+        }
+        
+        /* Recent Activity */
+        .activity-item {
+            display: flex;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .activity-time {
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+        }
+        
+        /* Course Progress */
+        .course-progress {
+            margin-bottom: 15px;
+        }
+        
+        .course-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .course-name {
+            font-weight: 500;
+        }
+        
+        .course-percent {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .progress {
+            height: 8px;
+            border-radius: 4px;
+            background-color: #e9ecef;
+            overflow: visible;
+        }
+        
+        .progress-bar {
+            background-color: var(--primary-color);
+            border-radius: 4px;
+            position: relative;
+        }
+        
+        /* Calendar */
+        #calendar {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .sidebar {
+                left: -250px;
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .menu-toggle {
+                display: block !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .top-navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-box {
+                max-width: 100%;
+                margin-bottom: 15px;
+            }
+            
+            .user-menu {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h4 class="mb-0">Andragogía Digital</h4>
+            <small class="text-muted">Panel de Control</small>
+        </div>
+        
+        <div class="sidebar-menu">
+            <a href="#" class="active">
+                <i class="fas fa-home"></i> Inicio
+            </a>
+            <a href="perfil.html">
+                <i class="fas fa-user"></i> Mi Perfil
+            </a>
+            <a href="#">
+                <i class="fas fa-book"></i> Mis Cursos
+                <span class="badge rounded-pill bg-primary">3</span>
+            </a>
+            <a href="#">
+                <i class="fas fa-calendar-alt"></i> Calendario
+            </a>
+            <a href="#">
+                <i class="fas fa-tasks"></i> Tareas
+                <span class="badge rounded-pill bg-danger">2</span>
+            </a>
+            <a href="#">
+                <i class="fas fa-chart-line"></i> Progreso
+            </a>
+            <a href="#">
+                <i class="fas fa-certificate"></i> Certificados
+            </a>
+            <a href="#">
+                <i class="fas fa-comments"></i> Mensajes
+                <span class="badge rounded-pill bg-success">5</span>
+            </a>
+            <a href="#">
+                <i class="fas fa-cog"></i> Configuración
+            </a>
+            <a href="#" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navbar -->
+        <div class="top-navbar">
+            <button class="btn btn-outline-secondary d-lg-none menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" class="form-control" placeholder="Buscar...">
+            </div>
+            
+            <div class="user-menu">
+                <div class="notification-icon">
+                    <i class="far fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                
+                <div class="message-icon">
+                    <i class="far fa-envelope"></i>
+                    <span class="message-badge">5</span>
+                </div>
+                
+                <div class="dropdown">
+                    <div class="user-profile" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="user-avatar">
+                        <div>
+                            <span class="user-name">Juan Pérez</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="perfil.html"><i class="fas fa-user me-2"></i>Mi Perfil</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Configuración</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" id="dropdownLogoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dashboard Content -->
+        <div class="container-fluid">
+            <!-- Welcome Section -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="dashboard-card">
+                        <h2>Bienvenido de nuevo, <span id="userGreeting">Juan</span> 👋</h2>
+                        <p class="text-muted">Aquí está lo que está sucediendo con tus cursos hoy.</p>
+                        <button class="btn btn-primary">Continuar Aprendiendo</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="dashboard-card">
+                        <div class="card-icon primary">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="card-value" id="activeCourses">5</div>
+                        <div class="card-label">Cursos Activos</div>
+                        <div class="card-change increase">
+                            <i class="fas fa-arrow-up me-1"></i> 2 más que el mes pasado
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="dashboard-card">
+                        <div class="card-icon success">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="card-value" id="completedLessons">24</div>
+                        <div class="card-label">Lecciones Completadas</div>
+                        <div class="card-change increase">
+                            <i class="fas fa-arrow-up me-1"></i> 5 más que ayer
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="dashboard-card">
+                        <div class="card-icon warning">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="card-value" id="studyTime">36h</div>
+                        <div class="card-label">Horas de Estudio</div>
+                        <div class="card-change increase">
+                            <i class="fas fa-arrow-up me-1"></i> 8% más que el mes pasado
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="dashboard-card">
+                        <div class="card-icon danger">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="card-value" id="pendingTasks">3</div>
+                        <div class="card-label">Tareas Pendientes</div>
+                        <div class="card-change decrease">
+                            <i class="fas fa-arrow-down me-1"></i> 1 vence pronto
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- Left Column -->
+                <div class="col-lg-8">
+                    <!-- Course Progress -->
+                    <div class="dashboard-card mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="mb-0">Progreso de Cursos</h5>
+                            <a href="#" class="btn btn-sm btn-outline-primary">Ver Todo</a>
+                        </div>
+                        
+                        <div class="course-progress">
+                            <div class="course-info">
+                                <span class="course-name">Introducción a la Andragogía</span>
+                                <span class="course-percent">75%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="course-progress">
+                            <div class="course-info">
+                                <span class="course-name">Diseño Instruccional para Adultos</span>
+                                <span class="course-percent">45%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="course-progress">
+                            <div class="course-info">
+                                <span class="course-name">Tecnologías para la Educación</span>
+                                <span class="course-percent">30%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <a href="#" class="btn btn-outline-primary btn-sm">Ver todos los cursos</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Study Statistics -->
+                    <div class="dashboard-card">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="mb-0">Estadísticas de Estudio</h5>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary active">Semanal</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Mensual</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Anual</button>
+                            </div>
+                        </div>
+                        <canvas id="studyChart" height="300"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Right Column -->
+                <div class="col-lg-4">
+                    <!-- Upcoming Deadlines -->
+                    <div class="dashboard-card mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="mb-0">Próximas Fechas Límite</h5>
+                            <a href="#" class="btn btn-sm btn-outline-primary">Ver Todo</a>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon bg-primary">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Tarea: Ensayo sobre Andragogía</div>
+                                <div class="activity-time">Vence mañana a las 11:59 PM</div>
+                                <span class="badge bg-warning text-dark">Pendiente</span>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon bg-success">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Ver video: Teorías del Aprendizaje</div>
+                                <div class="activity-time">Vence en 2 días</div>
+                                <span class="badge bg-info">En progreso</span>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon bg-info">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Participar en el foro</div>
+                                <div class="activity-time">Vence en 3 días</div>
+                                <span class="badge bg-warning text-dark">Pendiente</span>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <a href="#" class="btn btn-sm btn-outline-primary">Ver calendario completo</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Activity -->
+                    <div class="dashboard-card">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="mb-0">Actividad Reciente</h5>
+                            <a href="#" class="btn btn-sm btn-outline-primary">Ver Todo</a>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon bg-primary">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Completaste la lección "Principios Andragógicos"</div>
+                                <div class="activity-time">Hace 2 horas</div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon bg-success">
+                                <i class="fas fa-comment"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Nuevo comentario en tu publicación</div>
+                                <div class="activity-time">Hace 5 horas</div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon bg-warning">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">¡Logro desbloqueado! Estudiante Destacado</div>
+                                <div class="activity-time">Ayer a las 3:45 PM</div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <a href="#" class="btn btn-sm btn-outline-primary">Ver toda la actividad</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Row -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="dashboard-card">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="mb-0">Calendario de Actividades</h5>
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary me-2">Hoy</button>
+                                <button class="btn btn-sm btn-outline-secondary">Ver Todo</button>
+                            </div>
+                        </div>
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/es.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script type="module" src="../../assets/js/app.js"></script>
+    
+    <script>
+        // Inicializar Firebase
+        const firebaseConfig = {
+            // Tu configuración de Firebase
+        };
+        
+        // Inicializar Firebase si no está ya inicializado
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        
+        // Referencia a Firestore
+        const db = firebase.firestore();
+        
+        // Verificar estado de autenticación
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (!user) {
+                // Si el usuario no está autenticado, redirigir a la página de inicio de sesión
+                window.location.href = 'login.html';
+            } else {
+                // Cargar datos del usuario
+                loadUserData(user.uid);
+            }
+        });
+        
+        // Cargar datos del usuario
+        function loadUserData(userId) {
+            db.collection('users').doc(userId).get().then((doc) => {
+                if (doc.exists) {
+                    const userData = doc.data();
+                    // Actualizar la interfaz con los datos del usuario
+                    if (userData.displayName) {
+                        document.getElementById('userGreeting').textContent = userData.displayName.split(' ')[0];
+                        document.querySelectorAll('.user-name').forEach(el => {
+                            el.textContent = userData.displayName;
+                        });
+                    }
+                    
+                    if (userData.photoURL) {
+                        document.querySelectorAll('.user-avatar').forEach(el => {
+                            el.src = userData.photoURL;
+                        });
+                    }
+                }
+            }).catch((error) => {
+                console.error("Error al cargar datos del usuario:", error);
+            });
+        }
+        
+        // Manejar cierre de sesión
+        function handleLogout() {
+            firebase.auth().signOut().then(() => {
+                window.location.href = 'login.html';
+            }).catch((error) => {
+                console.error("Error al cerrar sesión:", error);
+                alert("Error al cerrar sesión. Por favor, inténtalo de nuevo.");
+            });
+        }
+        
+        // Asignar manejadores de eventos
+        document.addEventListener('DOMContentLoaded', function() {
+            // Menú desplegable en móviles
+            document.querySelector('.menu-toggle').addEventListener('click', function() {
+                document.querySelector('.sidebar').classList.toggle('active');
+            });
+            
+            // Manejar cierre de sesión
+            document.getElementById('logoutBtn')?.addEventListener('click', handleLogout);
+            document.getElementById('dropdownLogoutBtn')?.addEventListener('click', handleLogout);
+            
+            // Inicializar gráfico de estadísticas
+            initChart();
+            
+            // Inicializar calendario
+            initCalendar();
+            
+            // Cerrar menú al hacer clic fuera de él
+            document.addEventListener('click', function(event) {
+                const sidebar = document.querySelector('.sidebar');
+                const menuToggle = document.querySelector('.menu-toggle');
+                
+                if (!sidebar.contains(event.target) && !menuToggle.contains(event.target) && window.innerWidth < 992) {
+                    sidebar.classList.remove('active');
+                }
+            });
+        });
+        
+        // Inicializar gráfico de estadísticas
+        function initChart() {
+            const ctx = document.getElementById('studyChart').getContext('2d');
+            
+            // Datos de ejemplo para el gráfico
+            const labels = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+            const data = {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Minutos de estudio',
+                        data: [30, 45, 60, 40, 75, 30, 20],
+                        backgroundColor: 'rgba(13, 110, 253, 0.2)',
+                        borderColor: 'rgba(13, 110, 253, 1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Lecciones completadas',
+                        data: [2, 3, 4, 2, 5, 1, 0],
+                        backgroundColor: 'rgba(25, 135, 84, 0.2)',
+                        borderColor: 'rgba(25, 135, 84, 1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: false
+                    }
+                ]
+            };
+            
+            const config = {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + (this.scale.id === 'y' ? ' min' : '');
+                                }
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'nearest',
+                        axis: 'x',
+                        intersect: false
+                    }
+                },
+            };
+            
+            new Chart(ctx, config);
+        }
+        
+        // Inicializar calendario
+        function initCalendar() {
+            const calendarEl = document.getElementById('calendar');
+            
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'es',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: [
+                    {
+                        title: 'Tarea: Ensayo',
+                        start: new Date(),
+                        end: new Date(new Date().setDate(new Date().getDate() + 1)),
+                        color: '#dc3545'
+                    },
+                    {
+                        title: 'Clase en vivo',
+                        start: new Date(new Date().setHours(10, 0, 0)),
+                        end: new Date(new Date().setHours(12, 0, 0)),
+                        color: '#198754'
+                    },
+                    {
+                        title: 'Foro de discusión',
+                        start: new Date(new Date().setDate(new Date().getDate() + 3)),
+                        color: '#ffc107',
+                        textColor: '#000'
+                    }
+                ],
+                eventClick: function(info) {
+                    // Acción al hacer clic en un evento
+                    alert('Evento: ' + info.event.title);
+                    info.jsEvent.preventDefault();
+                }
+            });
+            
+            calendar.render();
+        }
+    </script>
+</body>
+</html>

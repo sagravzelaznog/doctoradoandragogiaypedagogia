@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Plataforma de Aprendizaje Andragógico</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
+    
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    
+    <style>
+        /* Estilos para la sección de contacto */
+        .contact-section {
+            padding: 80px 0;
+            background-color: #f8f9fa;
+        }
+        
+        .contact-info {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+        
+        .contact-info h3 {
+            color: #0d6efd;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        
+        .contact-method {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(13, 110, 253, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #0d6efd;
+            font-size: 1.2rem;
+        }
+        
+        .contact-text h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: #343a40;
+        }
+        
+        .contact-text p, 
+        .contact-text a {
+            color: #6c757d;
+            margin-bottom: 0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .contact-text a:hover {
+            color: #0d6efd;
+        }
+        
+        .contact-form {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-control, .form-select {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+        
+        .btn-submit {
+            background-color: #0d6efd;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .btn-submit:hover {
+            background-color: #0b5ed7;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background-color: #0d6efd;
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        /* Estilos para el mapa */
+        #map {
+            width: 100%;
+            height: 350px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border: 1px solid #dee2e6;
+        }
+        
+        /* Sección de preguntas frecuentes */
+        .faq-section {
+            padding: 60px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            color: #0d6efd;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #6c757d;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .accordion-item {
+            border: 1px solid #dee2e6;
+            border-radius: 8px !important;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        
+        .accordion-button {
+            font-weight: 500;
+            padding: 18px 25px;
+            color: #343a40;
+            background-color: white;
+        }
+        
+        .accordion-button:not(.collapsed) {
+            color: #0d6efd;
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+        
+        .accordion-button:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        
+        .accordion-body {
+            padding: 20px 25px;
+            color: #6c757d;
+            line-height: 1.7;
+        }
+        
+        /* Estilos responsivos */
+        @media (max-width: 991.98px) {
+            .contact-method {
+                margin-bottom: 20px;
+            }
+            
+            .contact-form {
+                margin-top: 30px;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 767.98px) {
+            .contact-section {
+                padding: 50px 0;
+            }
+            
+            .section-title h2 {
+                font-size: 1.6rem;
+            }
+            
+            .section-title p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="../../index.html">Andragogía Digital</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cursos.html">Cursos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="tutoriales.html">Tutoriales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="tutorias.html">Tutorías</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="acerca.html">Acerca de</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="contacto.html">Contacto</a>
+                    </li>
+                </ul>
+                <div class="d-flex" id="authButtons">
+                    <a href="login.html" class="btn btn-outline-light me-2" id="loginBtn">Iniciar sesión</a>
+                    <a href="registro.html" class="btn btn-light">Registrarse</a>
+                </div>
+                <div class="dropdown" id="userMenu" style="display: none;">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle"></i> <span id="userEmail"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="perfil.html">Mi perfil</a></li>
+                        <li><a class="dropdown-item" href="dashboard.html">Panel de control</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" id="logoutBtn">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Encabezado de la página -->
+    <header class="bg-primary text-white py-5">
+        <div class="container text-center">
+            <h1 class="display-4">Contáctanos</h1>
+            <p class="lead">Estamos aquí para ayudarte. Envíanos un mensaje o visita nuestras oficinas.</p>
+        </div>
+    </header>
+
+    <!-- Sección de contacto -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="row">
+                <!-- Información de contacto -->
+                <div class="col-lg-5 mb-4">
+                    <div class="contact-info">
+                        <h3>Información de contacto</h3>
+                        
+                        <div class="contact-method">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Dirección</h4>
+                                <p>Av. Universidad 1000, Col. Universidad<br>Monterrey, N.L., México, 64849</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Teléfono</h4>
+                                <p><a href="tel:+528118112345">+52 81 1812 3456</a></p>
+                                <p><a href="tel:+528119876543">+52 81 1987 6543</a></p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Correo electrónico</h4>
+                                <p><a href="mailto:info@andragogiadigital.com">info@andragogiadigital.com</a></p>
+                                <p><a href="mailto:soporte@andragogiadigital.com">soporte@andragogiadigital.com</a></p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="contact-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Horario de atención</h4>
+                                <p>Lunes a Viernes: 9:00 AM - 7:00 PM</p>
+                                <p>Sábados: 10:00 AM - 2:00 PM</p>
+                                <p>Domingos: Cerrado</p>
+                            </div>
+                        </div>
+                        
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                        </div>
+                        
+                        <div id="map"></div>
+                    </div>
+                </div>
+                
+                <!-- Formulario de contacto -->
+                <div class="col-lg-7">
+                    <div class="contact-form">
+                        <h3 class="mb-4">Envíanos un mensaje</h3>
+                        <form id="contactForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="firstName" class="form-label">Nombre(s) <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="firstName" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="lastName" class="form-label">Apellidos <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="lastName" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Correo electrónico <span class="text-danger">*</span></label>
+                                        <input type="email" class="form-control" id="email" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">Teléfono</label>
+                                        <input type="tel" class="form-control" id="phone">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">Asunto <span class="text-danger">*</span></label>
+                                <select class="form-select" id="subject" required>
+                                    <option value="" selected disabled>Selecciona un asunto</option>
+                                    <option value="informacion">Información general</option>
+                                    <option value="soporte">Soporte técnico</option>
+                                    <option value="pagos">Consultas de pago</option>
+                                    <option value="cursos">Información sobre cursos</option>
+                                    <option value="tutorias">Información sobre tutorías</option>
+                                    <option value="otro">Otro</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Mensaje <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="message" rows="6" required></textarea>
+                            </div>
+                            
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="privacyPolicy" required>
+                                <label class="form-check-label" for="privacyPolicy">
+                                    Acepto la <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Política de Privacidad</a> y los <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Términos de Servicio</a>.
+                                </label>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-submit">
+                                <i class="fas fa-paper-plane me-2"></i> Enviar mensaje
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sección de preguntas frecuentes -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Preguntas Frecuentes</h2>
+                <p>Aquí encontrarás respuestas a las preguntas más comunes que recibimos.</p>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="accordion" id="faqAccordion">
+                        <!-- Pregunta 1 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    ¿Cómo puedo registrarme en un curso?
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Para registrarte en un curso, sigue estos pasos: 1) Crea una cuenta en nuestra plataforma, 2) Inicia sesión, 3) Navega a la sección de Cursos, 4) Selecciona el curso de tu interés, 5) Haz clic en "Inscribirse" y sigue las instrucciones de pago. Si tienes algún problema, no dudes en contactarnos.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pregunta 2 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    ¿Qué métodos de pago aceptan?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Aceptamos una variedad de métodos de pago para tu comodidad, incluyendo tarjetas de crédito y débito (Visa, MasterCard, American Express), transferencias bancarias, PayPal y en algunos casos, pago en efectivo en nuestras instalaciones. Todos los pagos en línea están protegidos con encriptación SSL para garantizar la seguridad de tus datos.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pregunta 3 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    ¿Ofecen certificados al finalizar los cursos?
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Sí, al completar exitosamente cualquiera de nuestros cursos, recibirás un certificado digital que acredita tu participación y aprobación. Nuestros certificados incluyen un código QR único que los empleadores pueden verificar en nuestro sitio web. Algunos de nuestros programas también ofrecen créditos educativos o constancias con valor curricular, dependiendo del curso y la institución que lo respalde.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pregunta 4 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFour">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                    ¿Puedo acceder a los cursos desde mi dispositivo móvil?
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    ¡Por supuesto! Nuestra plataforma es completamente compatible con dispositivos móviles y tabletas. Puedes acceder a todos los materiales del curso, ver lecciones en video, participar en foros y realizar evaluaciones desde cualquier dispositivo con conexión a internet. También ofrecemos una aplicación móvil que puedes descargar desde la App Store o Google Play para una experiencia aún más fluida.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pregunta 5 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFive">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                    ¿Qué sucede si tengo problemas técnicos durante un curso?
+                                </button>
+                            </h2>
+                            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Si experimentas problemas técnicos durante tu curso, nuestro equipo de soporte está disponible para ayudarte. Puedes contactarnos a través del formulario de contacto, por correo electrónico a soporte@andragogiadigital.com, o llamando a nuestro número de atención telefónica. Nuestro equipo de soporte técnico está disponible de lunes a viernes de 9:00 AM a 7:00 PM, y sábados de 10:00 AM a 2:00 PM (hora del centro de México). También contamos con una sección de ayuda en línea con guías paso a paso para resolver problemas comunes.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-5">
+                        <p class="mb-3">¿No encontraste la respuesta que buscabas?</p>
+                        <a href="#contactForm" class="btn btn-outline-primary">Contáctanos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pie de página -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="text-uppercase mb-4">Andragogía Digital</h5>
+                    <p>Plataforma de aprendizaje en línea especializada en educación para adultos. Ofrecemos cursos, tutoriales y tutorías personalizadas para tu desarrollo profesional y personal.</p>
+                    <div class="social-links justify-content-start">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="text-uppercase mb-4">Enlaces rápidos</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="../../index.html" class="text-white-50 text-decoration-none">Inicio</a></li>
+                        <li class="mb-2"><a href="cursos.html" class="text-white-50 text-decoration-none">Cursos</a></li>
+                        <li class="mb-2"><a href="tutoriales.html" class="text-white-50 text-decoration-none">Tutoriales</a></li>
+                        <li class="mb-2"><a href="tutorias.html" class="text-white-50 text-decoration-none">Tutorías</a></li>
+                        <li class="mb-2"><a href="acerca.html" class="text-white-50 text-decoration-none">Acerca de</a></li>
+                        <li><a href="contacto.html" class="text-white text-decoration-none">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="text-uppercase mb-4">Categorías</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Educación</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Tecnología</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Idiomas</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Negocios</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Desarrollo Personal</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Más categorías</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <h6 class="text-uppercase mb-4">Boletín informativo</h6>
+                    <p class="text-white-50">Suscríbete para recibir noticias y actualizaciones.</p>
+                    <form class="mb-3">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Tu correo" aria-label="Tu correo" required>
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <p class="small text-white-50 mb-0">Al suscribirte, aceptas nuestra <a href="#" class="text-white">Política de Privacidad</a>.</p>
+                </div>
+            </div>
+            
+            <hr class="my-4 bg-light">
+            
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0 small">&copy; 2023 Andragogía Digital. Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-white-50 text-decoration-none small me-3">Términos de servicio</a>
+                    <a href="#" class="text-white-50 text-decoration-none small me-3">Política de privacidad</a>
+                    <a href="#" class="text-white-50 text-decoration-none small">Mapa del sitio</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Modal Política de Privacidad -->
+    <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="privacyModalLabel">Política de Privacidad</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>1. Información que recopilamos</h6>
+                    <p>Recopilamos información que nos proporcionas directamente, como cuando creas una cuenta, te suscribes a un boletín informativo, te inscribes en un curso o te comunicas con nosotros. Los tipos de información que podemos recopilar incluyen tu nombre, dirección de correo electrónico, información de pago y cualquier otra información que elijas proporcionar.</p>
+                    
+                    <h6 class="mt-4">2. Cómo utilizamos tu información</h6>
+                    <p>Utilizamos la información que recopilamos para diversos propósitos, incluyendo:</p>
+                    <ul>
+                        <li>Proporcionar, operar y mantener nuestros servicios</li>
+                        <li>Mejorar, personalizar y expandir nuestros servicios</li>
+                        <li>Comprender y analizar cómo utilizas nuestros servicios</li>
+                        <li>Desarrollar nuevos productos, servicios, características y funcionalidades</li>
+                        <li>Comunicarnos contigo, ya sea directamente o a través de uno de nuestros socios</li>
+                        <li>Enviarte correos electrónicos</li>
+                        <li>Encontrar y prevenir el fraude</li>
+                    </ul>
+                    
+                    <h6 class="mt-4">3. Divulgación de datos</h6>
+                    <p>No compartimos tu información personal con terceros excepto en los siguientes casos:</p>
+                    <ul>
+                        <li>Con proveedores de servicios que realizan servicios en nuestro nombre</li>
+                        <li>Para cumplir con cualquier ley, regulación o solicitud gubernamental</li>
+                        <li>Para proteger los derechos, propiedad o seguridad de nuestra empresa, nuestros usuarios u otros</li>
+                    </ul>
+                    
+                    <h6 class="mt-4">4. Seguridad de tus datos</h6>
+                    <p>La seguridad de tus datos es importante para nosotros, pero recuerda que ningún método de transmisión por Internet o método de almacenamiento electrónico es 100% seguro. Si bien nos esforzamos por utilizar medios comercialmente aceptables para proteger tus datos personales, no podemos garantizar su seguridad absoluta.</p>
+                    
+                    <h6 class="mt-4">5. Cambios a esta política de privacidad</h6>
+                    <p>Podemos actualizar nuestra Política de Privacidad de vez en cuando. Te notificaremos de cualquier cambio publicando la nueva Política de Privacidad en esta página. Te recomendamos revisar esta Política de Privacidad periódicamente para cualquier cambio.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Términos de Servicio -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Términos de Servicio</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>1. Términos</h6>
+                    <p>Al acceder a este sitio web, aceptas estar sujeto a estos Términos de Servicio, todas las leyes y regulaciones aplicables, y aceptas que eres responsable del cumplimiento de las leyes locales aplicables. Si no estás de acuerdo con alguno de estos términos, tienes prohibido usar o acceder a este sitio.</p>
+                    
+                    <h6 class="mt-4">2. Uso de la licencia</h6>
+                    <p>Se otorga permiso para descargar temporalmente una copia de los materiales en el sitio web de Andragogía Digital solo para visualización transitoria personal y no comercial. Esta es la concesión de una licencia, no una transferencia de título, y bajo esta licencia no puedes:</p>
+                    <ul>
+                        <li>Modificar o copiar los materiales</li>
+                        <li>Utilizar los materiales para cualquier propósito comercial o para exhibición pública</li>
+                        <li>Intentar descompilar o hacer ingeniería inversa de cualquier software contenido en el sitio</li>
+                        <li>Eliminar cualquier derecho de autor u otras notaciones de los materiales</li>
+                        <li>Transferir los materiales a otra persona o "reflejar" los materiales en cualquier otro servidor</li>
+                    </ul>
+                    
+                    <h6 class="mt-4">3. Exención de responsabilidad</h6>
+                    <p>Los materiales en el sitio web de Andragogía Digital se proporcionan "tal cual". Andragogía Digital no ofrece garantías, expresas o implícitas, y por la presente renuncia y niega todas las demás garantías, incluidas, entre otras, las garantías implícitas o condiciones de comerciabilidad, idoneidad para un propósito particular o no infracción de propiedad intelectual u otra violación de derechos.</p>
+                    
+                    <h6 class="mt-4">4. Limitaciones</h6>
+                    <p>En ningún caso Andragogía Digital o sus proveedores serán responsables de ningún daño (incluidos, entre otros, daños por pérdida de datos o beneficio, o debido a la interrupción del negocio) que surjan del uso o la incapacidad de usar los materiales en Andragogía Digital, incluso si Andragogía Digital o un representante autorizado de Andragogía Digital ha sido notificado oralmente o por escrito de la posibilidad de tales daños.</p>
+                    
+                    <h6 class="mt-4">5. Precisión de los materiales</h6>
+                    <p>Los materiales que aparecen en el sitio web de Andragogía Digital podrían incluir errores técnicos, tipográficos o fotográficos. Andragogía Digital no garantiza que ninguno de los materiales en su sitio web sea preciso, completo o actual. Andragogía Digital puede realizar cambios en los materiales contenidos en su sitio web en cualquier momento sin previo aviso.</p>
+                    
+                    <h6 class="mt-4">6. Enlaces</h6>
+                    <p>Andragogía Digital no ha revisado todos los sitios vinculados a su sitio web y no es responsable del contenido de dichos sitios vinculados. La inclusión de cualquier enlace no implica respaldo por parte de Andragogía Digital del sitio. El uso de dichos sitios web vinculados es bajo el propio riesgo del usuario.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script type="module" src="../../assets/js/app.js"></script>
+    
+    <script>
+        // Inicializar el mapa
+        function initMap() {
+            // Coordenadas de la ubicación (ejemplo: Monterrey, México)
+            const location = { lat: 25.6866, lng: -100.3161 };
+            
+            // Opciones del mapa
+            const mapOptions = {
+                zoom: 15,
+                center: location,
+                styles: [
+                    {
+                        "featureType": "all",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "saturation": 36
+                            },
+                            {
+                                "color": "#333333"
+                            },
+                            {
+                                "lightness": 40
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "all",
+                        "elementType": "labels.text.stroke",
+                        "stylers": [
+                            {
+                                "visibility": "on"
+                            },
+                            {
+                                "color": "#ffffff"
+                            },
+                            {
+                                "lightness": 16
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "all",
+                        "elementType": "labels.icon",
+                        "stylers": [
+                            {
+                                "visibility": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "administrative",
+                        "elementType": "geometry.fill",
+                        "stylers": [
+                            {
+                                "color": "#fefefe"
+                            },
+                            {
+                                "lightness": 20
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "administrative",
+                        "elementType": "geometry.stroke",
+                        "stylers": [
+                            {
+                                "color": "#fefefe"
+                            },
+                            {
+                                "lightness": 17
+                            },
+                            {
+                                "weight": 1.2
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "landscape",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#f5f5f5"
+                            },
+                            {
+                                "lightness": 20
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#f5f5f5"
+                            },
+                            {
+                                "lightness": 21
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi.park",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#dedede"
+                            },
+                            {
+                                "lightness": 21
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "geometry.fill",
+                        "stylers": [
+                            {
+                                "color": "#ffffff"
+                            },
+                            {
+                                "lightness": 17
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "geometry.stroke",
+                        "stylers": [
+                            {
+                                "color": "#ffffff"
+                            },
+                            {
+                                "lightness": 29
+                            },
+                            {
+                                "weight": 0.2
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.arterial",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#ffffff"
+                            },
+                            {
+                                "lightness": 18
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.local",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#ffffff"
+                            },
+                            {
+                                "lightness": 16
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "transit",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#f2f2f2"
+                            },
+                            {
+                                "lightness": 19
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#e9e9e9"
+                            },
+                            {
+                                "lightness": 17
+                            }
+                        ]
+                    }
+                ]
+            };
+            
+            // Crear el mapa
+            const map = new google.maps.Map(document.getElementById('map'), mapOptions);
+            
+            // Marcador de la ubicación
+            const marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                title: 'Andragogía Digital',
+                animation: google.maps.Animation.DROP,
+                icon: {
+                    url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                }
+            });
+            
+            // InfoWindow para el marcador
+            const infoWindow = new google.maps.InfoWindow({
+                content: '<div style="width: 200px;"><h6 style="margin: 0 0 5px 0; color: #0d6efd;">Andragogía Digital</h6><p style="margin: 0; color: #495057;">Av. Universidad 1000, Col. Universidad, Monterrey, N.L.</p></div>'
+            });
+            
+            // Mostrar InfoWindow al hacer clic en el marcador
+            marker.addListener('click', () => {
+                infoWindow.open(map, marker);
+            });
+            
+            // Mostrar InfoWindow por defecto
+            infoWindow.open(map, marker);
+        }
+        
+        // Inicializar el mapa cuando la ventana se cargue
+        window.initMap = initMap;
+        
+        // Manejar el envío del formulario
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.getElementById('contactForm');
+            
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Obtener los valores del formulario
+                    const firstName = document.getElementById('firstName').value;
+                    const email = document.getElementById('email').value;
+                    const message = document.getElementById('message').value;
+                    
+                    // Aquí podrías agregar el código para enviar el formulario a un servidor
+                    // Por ejemplo, usando fetch() o enviando los datos a Firebase
+                    
+                    // Mostrar mensaje de éxito
+                    alert(`¡Gracias por tu mensaje, ${firstName}! Nos pondremos en contacto contigo en la dirección ${email} lo antes posible.`);
+                    
+                    // Restablecer el formulario
+                    contactForm.reset();
+                });
+            }
+            
+            // Verificar el estado de autenticación
+            firebase.auth().onAuthStateChanged(function(user) {
+                const authButtons = document.getElementById('authButtons');
+                const userMenu = document.getElementById('userMenu');
+                const userEmail = document.getElementById('userEmail');
+                
+                if (user) {
+                    // Usuario ha iniciado sesión
+                    if (authButtons) authButtons.style.display = 'none';
+                    if (userMenu) userMenu.style.display = 'block';
+                    if (userEmail) userEmail.textContent = user.email;
+                    
+                    // Rellenar automáticamente el formulario con los datos del usuario
+                    if (document.getElementById('firstName')) {
+                        document.getElementById('firstName').value = user.displayName ? user.displayName.split(' ')[0] : '';
+                        document.getElementById('email').value = user.email || '';
+                    }
+                } else {
+                    // Usuario no ha iniciado sesión
+                    if (authButtons) authButtons.style.display = 'flex';
+                    if (userMenu) userMenu.style.display = 'none';
+                }
+            });
+            
+            // Manejar cierre de sesión
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    firebase.auth().signOut().then(() => {
+                        // Cierre de sesión exitoso
+                        window.location.href = '../../index.html';
+                    }).catch((error) => {
+                        console.error('Error al cerrar sesión:', error);
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

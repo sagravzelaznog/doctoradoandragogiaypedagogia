@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Plataforma de Aprendizaje Andragógico</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --success-color: #198754;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --light-bg: #f8f9fa;
+            --dark-bg: #212529;
+            --border-color: #dee2e6;
+            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        /* Profile Header */
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #0b5ed7 100%);
+            color: white;
+            padding: 60px 0 30px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+            opacity: 0.1;
+        }
+        
+        .profile-header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid white;
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+        
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .profile-title {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        /* Profile Navigation */
+        .profile-nav {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        .nav-pills .nav-link {
+            color: var(--secondary-color);
+            font-weight: 500;
+            padding: 15px 25px;
+            border-radius: 0;
+            position: relative;
+        }
+        
+        .nav-pills .nav-link.active {
+            color: var(--primary-color);
+            background: transparent;
+            font-weight: 600;
+        }
+        
+        .nav-pills .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary-color);
+        }
+        
+        /* Profile Content */
+        .profile-content {
+            padding: 20px 0 50px;
+        }
+        
+        /* Profile Card */
+        .profile-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header h5 {
+            margin: 0;
+            font-weight: 600;
+            color: var(--dark-bg);
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        /* About Me */
+        .about-text {
+            line-height: 1.7;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        .personal-info {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .personal-info li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+        }
+        
+        .personal-info li:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            width: 150px;
+            color: var(--secondary-color);
+        }
+        
+        .info-value {
+            flex: 1;
+        }
+        
+        /* Skills */
+        .skill-item {
+            margin-bottom: 15px;
+        }
+        
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .skill-name {
+            font-weight: 500;
+        }
+        
+        .skill-percent {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .progress {
+            height: 8px;
+            border-radius: 4px;
+            background-color: #e9ecef;
+        }
+        
+        .progress-bar {
+            background-color: var(--primary-color);
+            border-radius: 4px;
+        }
+        
+        /* Courses */
+        .course-card {
+            display: flex;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .course-card:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+        
+        .course-img {
+            width: 100px;
+            height: 70px;
+            border-radius: 5px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .course-info {
+            flex: 1;
+        }
+        
+        .course-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+        
+        .course-meta {
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+        
+        .progress-sm {
+            height: 5px;
+            margin-top: 10px;
+        }
+        
+        /* Badges */
+        .badge-card {
+            text-align: center;
+            padding: 20px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .badge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .badge-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(45deg, var(--primary-color), #6ea8fe);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: white;
+            font-size: 1.8rem;
+        }
+        
+        .badge-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .badge-date {
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .profile-avatar {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .profile-name {
+                font-size: 1.6rem;
+            }
+            
+            .profile-title {
+                font-size: 1rem;
+            }
+            
+            .profile-stats {
+                gap: 15px;
+            }
+            
+            .stat-number {
+                font-size: 1.2rem;
+            }
+            
+            .nav-pills .nav-link {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .info-label {
+                width: 120px;
+                font-size: 0.9rem;
+            }
+            
+            .course-card {
+                flex-direction: column;
+            }
+            
+            .course-img {
+                width: 100%;
+                height: 150px;
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .profile-header {
+                padding: 40px 0 20px;
+            }
+            
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .profile-name {
+                font-size: 1.4rem;
+            }
+            
+            .profile-stats {
+                flex-wrap: wrap;
+            }
+            
+            .stat-item {
+                width: 45%;
+                margin-bottom: 10px;
+            }
+            
+            .personal-info li {
+                flex-direction: column;
+            }
+            
+            .info-label {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Profile Header -->
+    <header class="profile-header">
+        <div class="container">
+            <div class="profile-header-content text-center">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="profile-avatar" id="profileAvatar">
+                <h1 class="profile-name" id="profileName">Juan Pérez</h1>
+                <p class="profile-title">Estudiante de Andragogía</p>
+                
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="coursesCount">5</span>
+                        <span class="stat-label">Cursos</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="hoursStudied">36</span>
+                        <span class="stat-label">Horas</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="certificatesCount">2</span>
+                        <span class="stat-label">Certificados</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="achievementsCount">8</span>
+                        <span class="stat-label">Logros</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Profile Navigation -->
+    <div class="profile-nav">
+        <div class="container">
+            <ul class="nav nav-pills" id="profileTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="overview-tab" data-bs-toggle="pill" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true">
+                        <i class="fas fa-user me-2"></i> Resumen
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="courses-tab" data-bs-toggle="pill" data-bs-target="#courses" type="button" role="tab" aria-controls="courses" aria-selected="false">
+                        <i class="fas fa-book me-2"></i> Mis Cursos
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="certificates-tab" data-bs-toggle="pill" data-bs-target="#certificates" type="button" role="tab" aria-controls="certificates" aria-selected="false">
+                        <i class="fas fa-certificate me-2"></i> Certificados
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="achievements-tab" data-bs-toggle="pill" data-bs-target="#achievements" type="button" role="tab" aria-controls="achievements" aria-selected="false">
+                        <i class="fas fa-trophy me-2"></i> Logros
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="settings-tab" data-bs-toggle="pill" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
+                        <i class="fas fa-cog me-2"></i> Configuración
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Profile Content -->
+    <div class="container profile-content">
+        <div class="tab-content" id="profileTabsContent">
+            <!-- Overview Tab -->
+            <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <!-- About Me -->
+                        <div class="profile-card mb-4">
+                            <div class="card-header">
+                                <h5><i class="fas fa-user-circle me-2"></i> Sobre Mí</h5>
+                                <button class="btn btn-sm btn-outline-primary" id="editAboutBtn">Editar</button>
+                            </div>
+                            <div class="card-body">
+                                <p class="about-text" id="aboutText">
+                                    Apasionado por el aprendizaje continuo y la educación para adultos. Actualmente enfocado en desarrollar habilidades en andragogía y diseño instruccional. Me encanta compartir conocimientos y aprender de los demás en un entorno colaborativo.
+                                </p>
+                                
+                                <h6 class="mt-4 mb-3">Información Personal</h6>
+                                <ul class="personal-info">
+                                    <li>
+                                        <span class="info-label"><i class="fas fa-envelope me-2"></i> Correo:</span>
+                                        <span class="info-value" id="userEmail">juan.perez@ejemplo.com</span>
+                                    </li>
+                                    <li>
+                                        <span class="info-label"><i class="fas fa-phone me-2"></i> Teléfono:</span>
+                                        <span class="info-value" id="userPhone">+52 81 1234 5678</span>
+                                    </li>
+                                    <li>
+                                        <span class="info-label"><i class="fas fa-map-marker-alt me-2"></i> Ubicación:</span>
+                                        <span class="info-value" id="userLocation">Monterrey, N.L., México</span>
+                                    </li>
+                                    <li>
+                                        <span class="info-label"><i class="fas fa-graduation-cap me-2"></i> Nivel Educativo:</span>
+                                        <span class="info-value" id="userEducation">Licenciatura en Educación</span>
+                                    </li>
+                                    <li>
+                                        <span class="info-label"><i class="fas fa-briefcase me-2"></i> Ocupación:</span>
+                                        <span class="info-value" id="userOccupation">Docente</span>
+                                    </li>
+                                    <li>
+                                        <span class="info-label"><i class="fas fa-calendar-alt me-2"></i> Fecha de Registro:</span>
+                                        <span class="info-value" id="joinDate">15 de Enero, 2023</span>
+                                    </li>
+                                </ul>
+                                
+                                <div class="mt-4">
+                                    <h6 class="mb-3">Redes Sociales</h6>
+                                    <div class="d-flex gap-3">
+                                        <a href="#" class="btn btn-outline-primary btn-sm"><i class="fab fa-linkedin me-1"></i> LinkedIn</a>
+                                        <a href="#" class="btn btn-outline-info btn-sm"><i class="fab fa-twitter me-1"></i> Twitter</a>
+                                        <a href="#" class="btn btn-outline-secondary btn-sm"><i class="fab fa-github me-1"></i> GitHub</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Skills -->
+                        <div class="profile-card">
+                            <div class="card-header">
+                                <h5><i class="fas fa-chart-line me-2"></i> Mis Habilidades</h5>
+                                <button class="btn btn-sm btn-outline-primary">Agregar</button>
+                            </div>
+                            <div class="card-body">
+                                <div class="skill-item">
+                                    <div class="skill-header">
+                                        <span class="skill-name">Andragogía</span>
+                                        <span class="skill-percent">85%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-header">
+                                        <span class="skill-name">Diseño Instruccional</span>
+                                        <span class="skill-percent">75%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-header">
+                                        <span class="skill-name">Tecnologías Educativas</span>
+                                        <span class="skill-percent">65%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-header">
+                                        <span class="skill-name">Evaluación del Aprendizaje</span>
+                                        <span class="skill-percent">70%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-end mt-4">
+                                    <a href="#" class="btn btn-sm btn-outline-primary">Ver todas las habilidades</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <!-- Progress -->
+                        <div class="profile-card mb-4">
+                            <div class="card-header">
+                                <h5><i class="fas fa-tasks me-2"></i> Mi Progreso</h5>
+                            </div>
+                            <div class="card-body text-center">
+                                <div class="position-relative d-inline-block mb-4">
+                                    <div id="progressCircle" style="width: 180px; height: 180px;">
+                                        <!-- Progress circle will be rendered here by JavaScript -->
+                                    </div>
+                                    <div class="position-absolute top-50 start-50 translate-middle text-center">
+                                        <div class="display-4 fw-bold" id="progressPercent">65%</div>
+                                        <div class="text-muted">Completado</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between mb-3">
+                                    <div>
+                                        <div class="fw-bold" id="completedCourses">3</div>
+                                        <div class="text-muted small">Completados</div>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold" id="inProgressCourses">2</div>
+                                        <div class="text-muted small">En progreso</div>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold" id="totalCourses">5</div>
+                                        <div class="text-muted small">Total</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <a href="#" class="btn btn-primary w-100">Continuar Aprendiendo</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Recent Activity -->
+                        <div class="profile-card mb-4">
+                            <div class="card-header">
+                                <h5><i class="fas fa-history me-2"></i> Actividad Reciente</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex mb-3">
+                                    <div class="flex-shrink-0">
+                                        <div class="bg-primary bg-opacity-10 p-2 rounded-circle">
+                                            <i class="fas fa-check text-primary"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ms-3">
+                                        <p class="mb-0 fw-medium">Completaste la lección: <a href="#" class="text-primary">Principios Andragógicos</a></p>
+                                        <small class="text-muted">Hace 2 horas</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex mb-3">
+                                    <div class="flex-shrink-0">
+                                        <div class="bg-success bg-opacity-10 p-2 rounded-circle">
+                                            <i class="fas fa-comment text-success"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ms-3">
+                                        <p class="mb-0 fw-medium">Comentaste en: <a href="#" class="text-primary">Foro de Discusión</a></p>
+                                        <small class="text-muted">Ayer a las 3:45 PM</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0">
+                                        <div class="bg-warning bg-opacity-10 p-2 rounded-circle">
+                                            <i class="fas fa-trophy text-warning"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ms-3">
+                                        <p class="mb-0 fw-medium">Logro desbloqueado: <a href="#" class="text-primary">Estudiante Destacado</a></p>
+                                        <small class="text-muted">15 de Nov, 2023</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-center mt-3">
+                                    <a href="#" class="btn btn-sm btn-outline-primary">Ver toda la actividad</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Badges -->
+                        <div class="profile-card">
+                            <div class="card-header">
+                                <h5><i class="fas fa-award me-2"></i> Insignias</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6 mb-3">
+                                        <div class="badge-card">
+                                            <div class="badge-icon">
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <h6 class="badge-title">Estrella Naciente</h6>
+                                            <div class="badge-date">Oct 2023</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <div class="badge-card">
+                                            <div class="badge-icon" style="background: linear-gradient(45deg, #ffc107, #ffda6a);">
+                                                <i class="fas fa-bolt"></i>
+                                            </div>
+                                            <h6 class="badge-title">Aprendiz Rápido</h6>
+                                            <div class="badge-date">Sep 2023</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="badge-card">
+                                            <div class="badge-icon" style="background: linear-gradient(45deg, #198754, #75b798);">
+                                                <i class="fas fa-comments"></i>
+                                            </div>
+                                            <h6 class="badge-title">Comunicador</h6>
+                                            <div class="badge-date">Ago 2023</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="badge-card">
+                                            <div class="badge-icon" style="background: linear-gradient(45deg, #6f42c1, #a37ee9);">
+                                                <i class="fas fa-graduation-cap"></i>
+                                            </div>
+                                            <h6 class="badge-title">Estudiante</h6>
+                                            <div class="badge-date">Jul 2023</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-center mt-3">
+                                    <a href="#" class="btn btn-sm btn-outline-primary">Ver todas las insignias</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Courses Tab -->
+            <div class="tab-pane fade" id="courses" role="tabpanel" aria-labelledby="courses-tab">
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-book me-2"></i> Mis Cursos</h5>
+                        <div class="input-group" style="width: 300px;">
+                            <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Buscar cursos...">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="course-card">
+                            <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Course" class="course-img">
+                            <div class="course-info">
+                                <h5 class="course-title">Introducción a la Andragogía</h5>
+                                <div class="course-meta">
+                                    <span class="me-3"><i class="fas fa-user-graduate me-1"></i> Dr. Carlos Rodríguez</span>
+                                    <span><i class="far fa-calendar-alt me-1"></i> 15 Lecciones</span>
+                                </div>
+                                <div class="progress progress-sm mt-2">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <small class="text-muted">85% Completado</small>
+                                    <small class="text-muted">12/15 Lecciones</small>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column justify-content-center ms-3">
+                                <a href="#" class="btn btn-primary btn-sm mb-2">Continuar</a>
+                                <a href="#" class="btn btn-outline-secondary btn-sm">Ver Detalles</a>
+                            </div>
+                        </div>
+                        
+                        <div class="course-card">
+                            <img src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Course" class="course-img">
+                            <div class="course-info">
+                                <h5 class="course-title">Diseño Instruccional para Adultos</h5>
+                                <div class="course-meta">
+                                    <span class="me-3"><i class="fas fa-user-graduate me-1"></i> Dra. Ana Martínez</span>
+                                    <span><i class="far fa-calendar-alt me-1"></i> 10 Lecciones</span>
+                                </div>
+                                <div class="progress progress-sm mt-2">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <small class="text-muted">45% Completado</small>
+                                    <small class="text-muted">4.5/10 Lecciones</small>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column justify-content-center ms-3">
+                                <a href="#" class="btn btn-primary btn-sm mb-2">Continuar</a>
+                                <a href="#" class="btn btn-outline-secondary btn-sm">Ver Detalles</a>
+                            </div>
+                        </div>
+                        
+                        <div class="course-card">
+                            <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Course" class="course-img">
+                            <div class="course-info">
+                                <h5 class="course-title">Tecnologías para la Educación</h5>
+                                <div class="course-meta">
+                                    <span class="me-3"><i class="fas fa-user-graduate me-1"></i> Ing. Luis García</span>
+                                    <span><i class="far fa-calendar-alt me-1"></i> 12 Lecciones</span>
+                                </div>
+                                <div class="progress progress-sm mt-2">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <small class="text-muted">30% Completado</small>
+                                    <small class="text-muted">3.6/12 Lecciones</small>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column justify-content-center ms-3">
+                                <a href="#" class="btn btn-primary btn-sm mb-2">Continuar</a>
+                                <a href="#" class="btn btn-outline-secondary btn-sm">Ver Detalles</a>
+                            </div>
+                        </div>
+                        
+                        <div class="course-card">
+                            <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Course" class="course-img">
+                            <div class="course-info">
+                                <h5 class="course-title">Evaluación del Aprendizaje</h5>
+                                <div class="course-meta">
+                                    <span class="me-3"><i class="fas fa-user-graduate me-1"></i> Dra. Laura Sánchez</span>
+                                    <span><i class="far fa-calendar-alt me-1"></i> 8 Lecciones</span>
+                                </div>
+                                <div class="progress progress-sm mt-2">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <small class="text-muted">100% Completado</small>
+                                    <small class="text-muted">8/8 Lecciones</small>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column justify-content-center ms-3">
+                                <a href="#" class="btn btn-success btn-sm mb-2">Ver Certificado</a>
+                                <a href="#" class="btn btn-outline-secondary btn-sm">Volver a Tomar</a>
+                            </div>
+                        </div>
+                        
+                        <div class="course-card">
+                            <img src="https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Course" class="course-img">
+                            <div class="course-info">
+                                <h5 class="course-title">Neuroeducación</h5>
+                                <div class="course-meta">
+                                    <span class="me-3"><i class="fas fa-user-graduate me-1"></i> Dra. Patricia López</span>
+                                    <span><i class="far fa-calendar-alt me-1"></i> 10 Lecciones</span>
+                                </div>
+                                <div class="progress progress-sm mt-2">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <small class="text-muted">100% Completado</small>
+                                    <small class="text-muted">10/10 Lecciones</small>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column justify-content-center ms-3">
+                                <a href="#" class="btn btn-success btn-sm mb-2">Ver Certificado</a>
+                                <a href="#" class="btn btn-outline-secondary btn-sm">Volver a Tomar</a>
+                            </div>
+                        </div>
+                        
+                        <nav class="mt-4">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Siguiente</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Certificates Tab -->
+            <div class="tab-pane fade" id="certificates" role="tabpanel" aria-labelledby="certificates-tab">
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-certificate me-2"></i> Mis Certificados</h5>
+                        <div class="input-group" style="width: 300px;">
+                            <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Buscar certificados...">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="certificate-card">
+                                    <div class="certificate-header">
+                                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Certificate" class="certificate-img">
+                                        <div class="certificate-badge">
+                                            <i class="fas fa-medal"></i>
+                                        </div>
+                                    </div>
+                                    <div class="certificate-body">
+                                        <h6>Evaluación del Aprendizaje</h6>
+                                        <p class="text-muted small mb-2">Completado el 15 de Octubre, 2023</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="badge bg-success">Aprobado</span>
+                                            <div class="certificate-actions">
+                                                <a href="#" class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="tooltip" title="Ver">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Descargar">
+                                                    <i class="fas fa-download"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="certificate-card">
+                                    <div class="certificate-header">
+                                        <img src="https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Certificate" class="certificate-img">
+                                        <div class="certificate-badge">
+                                            <i class="fas fa-medal"></i>
+                                        </div>
+                                    </div>
+                                    <div class="certificate-body">
+                                        <h6>Neuroeducación</h6>
+                                        <p class="text-muted small mb-2">Completado el 1 de Septiembre, 2023</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="badge bg-success">Aprobado</span>
+                                            <div class="certificate-actions">
+                                                <a href="#" class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="tooltip" title="Ver">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Descargar">
+                                                    <i class="fas fa-download"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 col-lg-4">
+                                <div class="certificate-card">
+                                    <div class="certificate-coming-soon">
+                                        <div class="coming-soon-content">
+                                            <i class="fas fa-trophy mb-3" style="font-size: 2rem; color: var(--warning-color);"></i>
+                                            <h6>¡Sigue aprendiendo!</h6>
+                                            <p class="small text-muted">Completa más cursos para desbloquear nuevos certificados.</p>
+                                            <a href="cursos.html" class="btn btn-sm btn-warning">Explorar Cursos</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Achievements Tab -->
+            <div class="tab-pane fade" id="achievements" role="tabpanel" aria-labelledby="achievements-tab">
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-trophy me-2"></i> Mis Logros</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="me-3">
+                                <span class="text-warning"><i class="fas fa-star"></i> 1,250</span>
+                                <small class="text-muted d-block">Puntos</small>
+                            </div>
+                            <div>
+                                <span class="text-primary"><i class="fas fa-trophy"></i> 8</span>
+                                <small class="text-muted d-block">Logros</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="achievement-card earned">
+                                    <div class="achievement-icon">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <h6>Estrella Naciente</h6>
+                                    <p class="small text-muted">Completa tu primer curso</p>
+                                    <div class="achievement-points">
+                                        <i class="fas fa-star"></i> 100
+                                    </div>
+                                    <div class="achievement-date">Obtenido: 15 Oct, 2023</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="achievement-card earned">
+                                    <div class="achievement-icon">
+                                        <i class="fas fa-bolt"></i>
+                                    </div>
+                                    <h6>Aprendiz Rápido</h6>
+                                    <p class="small text-muted">Completa un curso en menos de una semana</p>
+                                    <div class="achievement-points">
+                                        <i class="fas fa-star"></i> 250
+                                    </div>
+                                    <div class="achievement-date">Obtenido: 20 Sep, 2023</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="achievement-card earned">
+                                    <div class="achievement-icon">
+                                        <i class="fas fa-comments"></i>
+                                    </div>
+                                    <h6>Comunicador</h6>
+                                    <p class="small text-muted">Participa en 10 discusiones</p>
+                                    <div class="achievement-points">
+                                        <i class="fas fa-star"></i> 150
+                                    </div>
+                                    <div class="achievement-date">Obtenido: 5 Sep, 2023</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="achievement-card earned">
+                                    <div class="achievement-icon">
+                                        <i class="fas fa-graduation-cap"></i>
+                                    </div>
+                                    <h6>Estudiante</h6>
+                                    <p class="small text-muted">Completa tu registro de estudiante</p>
+                                    <div class="achievement-points">
+                                        <i class="fas fa-star"></i> 50
+                                    </div>
+                                    <div class="achievement-date">Obtenido: 15 Ago, 2023</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="achievement-card earned">
+                                    <div class="achievement-icon">
+                                        <i class="fas fa-book-reader"></i>
+                                    </div>
+                                    <h6>Lector Ávido</h6>
+                                    <p class="small text-muted">Lee 20 recursos adicionales</p>
+                                    <div class="achievement-points">
+                                        <i class="fas fa-star"></i> 200
+                                    </div>
+                                    <div class="achievement-date">Obtenido: 1 Nov, 2023</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="achievement-card earned">
+                                    <div class="achievement-icon">
+                                        <i class="fas fa-check-double"></i>
+                                    </div>
+                                    <h6>Perfecto</h6>
+                                    <p class="small text-muted">Obtén 100% en un examen</p>
+                                    <div class="achievement-points">
+                                        <i class="fas fa-star"></i> 300
+                                    </div>
+                                    <div class="achievement-date">Obtenido: 25 Oct, 2023</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="achievement-card earned">
+                                    <div class="achievement-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <h6>Social</h6>
+                                    <p class="small text-muted">Conecta con 10 compañeros</p>
+                                    <div class="achievement-points">
+                                        <i class="fas fa-star"></i> 150
+                                    </div>
+                                    <div class="achievement-date">Obtenido: 10 Nov, 2023</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="achievement-card earned">
+                                    <div class="achievement-icon">
+                                        <i class="fas fa-award"></i>
+                                    </div>
+                                    <h6>Maestría</h6>
+                                    <p class="small text-muted">Completa 5 cursos</p>
+                                    <div class="achievement-points">
+                                        <i class="fas fa-star"></i> 500
+                                    </div>
+                                    <div class="achievement-date">Obtenido: 1 Nov, 2023</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 col-lg-4">
+                                <div class="achievement-card locked">
+                                    <div class="achievement-icon">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                    <h6>Experto en Andragogía</h6>
+                                    <p class="small text-muted">Completa 10 cursos de andragogía</p>
+                                    <div class="achievement-points">
+                                        <i class="fas fa-star"></i> 1000
+                                    </div>
+                                    <div class="achievement-progress">
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <small>5/10 cursos completados</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Tab -->
+            <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="profile-card">
+                            <div class="card-header">
+                                <h5><i class="fas fa-user-shield me-2"></i> Configuración de Privacidad</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="profileVisibility" checked>
+                                    <label class="form-check-label" for="profileVisibility">Perfil Público</label>
+                                    <p class="small text-muted">Permitir que otros usuarios vean tu perfil</p>
+                                </div>
+                                
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                                    <label class="form-check-label" for="emailNotifications">Notificaciones por Correo</label>
+                                    <p class="small text-muted">Recibir notificaciones por correo electrónico</p>
+                                </div>
+                                
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="pushNotifications" checked>
+                                    <label class="form-check-label" for="pushNotifications">Notificaciones Push</label>
+                                    <p class="small text-muted">Recibir notificaciones en el navegador</p>
+                                </div>
+                                
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="showActivity" checked>
+                                    <label class="form-check-label" for="showActivity">Mostrar Actividad Reciente</label>
+                                    <p class="small text-muted">Mostrar tu actividad reciente en tu perfil</p>
+                                </div>
+                                
+                                <button class="btn btn-primary mt-3">Guardar Cambios</button>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-card mt-4">
+                            <div class="card-header">
+                                <h5><i class="fas fa-bell me-2"></i> Preferencias de Notificaciones</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Frecuencia de Resúmenes</label>
+                                    <select class="form-select">
+                                        <option>Diario</option>
+                                        <option selected>Semanal</option>
+                                        <option>Mensual</option>
+                                        <option>Nunca</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Notificaciones de Cursos</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="courseUpdates" checked>
+                                        <label class="form-check-label" for="courseUpdates">Actualizaciones de cursos</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="announcements" checked>
+                                        <label class="form-check-label" for="announcements">Anuncios</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="deadlineReminders" checked>
+                                        <label class="form-check-label" for="deadlineReminders">Recordatorios de fechas límite</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Notificaciones de la Comunidad</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="newMessages" checked>
+                                        <label class="form-check-label" for="newMessages">Nuevos mensajes</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="replies" checked>
+                                        <label class="form-check-label" for="replies">Respuestas a mis publicaciones</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="mentions">
+                                        <label class="form-check-label" for="mentions">Menciones</label>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn btn-primary">Guardar Preferencias</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-8">
+                        <div class="profile-card mb-4">
+                            <div class="card-header">
+                                <h5><i class="fas fa-user-edit me-2"></i> Editar Perfil</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="profileForm">
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="firstName" class="form-label">Nombre(s)</label>
+                                                <input type="text" class="form-control" id="firstName" value="Juan" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="lastName" class="form-label">Apellidos</label>
+                                                <input type="text" class="form-control" id="lastName" value="Pérez López" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">Correo Electrónico</label>
+                                                <input type="email" class="form-control" id="email" value="juan.perez@ejemplo.com" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="phone" class="form-label">Teléfono</label>
+                                                <input type="tel" class="form-control" id="phone" value="+52 81 1234 5678">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="bio" class="form-label">Biografía</label>
+                                        <textarea class="form-control" id="bio" rows="4">Apasionado por el aprendizaje continuo y la educación para adultos. Actualmente enfocado en desarrollar habilidades en andragogía y diseño instruccional.</textarea>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label class="form-label">Género</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="gender" id="male" value="male" checked>
+                                            <label class="form-check-label" for="male">
+                                                Masculino
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="gender" id="female" value="female">
+                                            <label class="form-check-label" for="female">
+                                                Femenino
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="gender" id="other" value="other">
+                                            <label class="form-check-label" for="other">
+                                                Otro
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="country" class="form-label">País</label>
+                                                <select class="form-select" id="country">
+                                                    <option value="">Seleccionar país</option>
+                                                    <option value="MX" selected>México</option>
+                                                    <option value="US">Estados Unidos</option>
+                                                    <option value="ES">España</option>
+                                                    <option value="CO">Colombia</option>
+                                                    <option value="AR">Argentina</option>
+                                                    <option value="PE">Perú</option>
+                                                    <option value="CL">Chile</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="city" class="form-label">Ciudad</label>
+                                                <input type="text" class="form-control" id="city" value="Monterrey">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="languages" class="form-label">Idiomas</label>
+                                        <select class="form-select" id="languages" multiple>
+                                            <option value="es" selected>Español</option>
+                                            <option value="en" selected>Inglés</option>
+                                            <option value="fr">Francés</option>
+                                            <option value="de">Alemán</option>
+                                            <option value="pt">Portugués</option>
+                                            <option value="it">Italiano</option>
+                                        </select>
+                                        <div class="form-text">Mantén presionada la tecla Ctrl (o Cmd en Mac) para seleccionar múltiples opciones.</div>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="interests" class="form-label">Intereses</label>
+                                        <input type="text" class="form-control" id="interests" value="Andragogía, Educación de Adultos, Aprendizaje en Línea, Tecnología Educativa">
+                                        <div class="form-text">Separa los intereses con comas.</div>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between">
+                                        <button type="button" class="btn btn-outline-secondary">Cancelar</button>
+                                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-card mb-4">
+                            <div class="card-header">
+                                <h5><i class="fas fa-lock me-2"></i> Cambiar Contraseña</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="passwordForm">
+                                    <div class="mb-3">
+                                        <label for="currentPassword" class="form-label">Contraseña Actual</label>
+                                        <input type="password" class="form-control" id="currentPassword" required>
+                                    </div>
+                                    
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="mb-3 mb-md-0">
+                                                <label for="newPassword" class="form-label">Nueva Contraseña</label>
+                                                <input type="password" class="form-control" id="newPassword" required>
+                                                <div class="form-text">Mínimo 8 caracteres, incluyendo mayúsculas, minúsculas y números.</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3 mb-md-0">
+                                                <label for="confirmPassword" class="form-label">Confirmar Nueva Contraseña</label>
+                                                <input type="password" class="form-control" id="confirmPassword" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-card">
+                            <div class="card-header">
+                                <h5><i class="fas fa-trash-alt me-2"></i> Eliminar Cuenta</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-warning">
+                                    <h6><i class="fas fa-exclamation-triangle me-2"></i> ¡Atención!</h6>
+                                    <p class="mb-0">Eliminar tu cuenta es una acción permanente. Todos tus datos, incluyendo cursos, progreso y certificados, serán eliminados de forma permanente y no podrán recuperarse.</p>
+                                </div>
+                                
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="confirmDelete">
+                                    <label class="form-check-label" for="confirmDelete">
+                                        Entiendo que todos mis datos serán eliminados permanentemente
+                                    </label>
+                                </div>
+                                
+                                <button type="button" class="btn btn-danger" id="deleteAccountBtn" disabled data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                                    <i class="fas fa-trash-alt me-2"></i> Eliminar Mi Cuenta
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Account Modal -->
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteAccountModalLabel"><i class="fas fa-exclamation-triangle me-2"></i> Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás absolutamente seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer. Se eliminarán permanentemente:</p>
+                    <ul>
+                        <li>Tus datos de perfil</li>
+                        <li>Tu historial de cursos</li>
+                        <li>Tus certificados y logros</li>
+                        <li>Tus mensajes y actividad</li>
+                    </ul>
+                    <p class="mb-0">Para confirmar, escribe <strong>ELIMINAR CUENTA</strong> en el siguiente campo:</p>
+                    <input type="text" class="form-control mt-2" id="confirmDeleteText" placeholder="Escribe ELIMINAR CUENTA">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn" disabled>Eliminar Mi Cuenta Permanentemente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="mb-3">Andragogía Digital</h5>
+                    <p class="text-muted">Plataforma de aprendizaje en línea especializada en educación para adultos. Ofrecemos cursos, tutoriales y tutorías personalizadas para tu desarrollo profesional y personal.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h6 class="text-uppercase fw-bold mb-3">Enlaces Rápidos</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="../../index.html" class="text-muted text-decoration-none">Inicio</a></li>
+                        <li class="mb-2"><a href="cursos.html" class="text-muted text-decoration-none">Cursos</a></li>
+                        <li class="mb-2"><a href="tutoriales.html" class="text-muted text-decoration-none">Tutoriales</a></li>
+                        <li class="mb-2"><a href="tutorias.html" class="text-muted text-decoration-none">Tutorías</a></li>
+                        <li class="mb-2"><a href="acerca.html" class="text-muted text-decoration-none">Acerca de</a></li>
+                        <li><a href="contacto.html" class="text-muted text-decoration-none">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-4 mb-4">
+                    <h6 class="text-uppercase fw-bold mb-3">Categorías</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Educación</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Tecnología</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Idiomas</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Negocios</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Desarrollo Personal</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Ver Todas</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="text-uppercase fw-bold mb-3">Boletín Informativo</h6>
+                    <p class="text-muted">Suscríbete para recibir noticias y actualizaciones.</p>
+                    <form class="mb-3">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Tu correo" required>
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <p class="small text-muted mb-0">Al suscribirte, aceptas nuestra <a href="#" class="text-white">Política de Privacidad</a>.</p>
+                </div>
+            </div>
+            
+            <hr class="my-4 bg-light">
+            
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0 small">&copy; 2023 Andragogía Digital. Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-muted text-decoration-none small me-3">Términos de servicio</a>
+                    <a href="#" class="text-muted text-decoration-none small me-3">Política de privacidad</a>
+                    <a href="#" class="text-muted text-decoration-none small">Mapa del sitio</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script type="module" src="../../assets/js/app.js"></script>
+    
+    <script>
+        // Inicializar Firebase
+        const firebaseConfig = {
+            // Tu configuración de Firebase
+        };
+        
+        // Inicializar Firebase si no está ya inicializado
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        
+        // Referencia a Firestore
+        const db = firebase.firestore();
+        
+        // Verificar estado de autenticación
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (!user) {
+                // Si el usuario no está autenticado, redirigir a la página de inicio de sesión
+                window.location.href = 'login.html';
+            } else {
+                // Cargar datos del usuario
+                loadUserData(user.uid);
+            }
+        });
+        
+        // Cargar datos del usuario
+        function loadUserData(userId) {
+            db.collection('users').doc(userId).get().then((doc) => {
+                if (doc.exists) {
+                    const userData = doc.data();
+                    // Actualizar la interfaz con los datos del usuario
+                    if (userData.displayName) {
+                        document.getElementById('profileName').textContent = userData.displayName;
+                        document.getElementById('userGreeting').textContent = userData.displayName.split(' ')[0];
+                    }
+                    
+                    if (userData.photoURL) {
+                        document.getElementById('profileAvatar').src = userData.photoURL;
+                    }
+                    
+                    if (userData.email) {
+                        document.getElementById('userEmail').textContent = userData.email;
+                    }
+                    
+                    // Actualizar otros campos según sea necesario
+                }
+            }).catch((error) => {
+                console.error("Error al cargar datos del usuario:", error);
+            });
+        }
+        
+        // Inicializar gráfico de progreso
+        function initProgressChart() {
+            const progressCtx = document.getElementById('progressCircle').getContext('2d');
+            
+            // Datos para el gráfico de progreso
+            const progressData = {
+                datasets: [{
+                    data: [65, 35], // 65% completado
+                    backgroundColor: [
+                        '#198754', // Verde para el progreso
+                        '#e9ecef'  // Gris para el resto
+                    ],
+                    borderWidth: 0,
+                    circumference: 180,
+                    rotation: 270,
+                    cutout: '80%'
+                }]
+            };
+            
+            // Configuración del gráfico
+            const progressConfig = {
+                type: 'doughnut',
+                data: progressData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutoutPercentage: 80,
+                    rotation: 1 * Math.PI,
+                    circumference: 1 * Math.PI,
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        enabled: false
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            };
+            
+            // Crear el gráfico
+            new Chart(progressCtx, progressConfig);
+        }
+        
+        // Inicializar tooltips
+        function initTooltips() {
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        }
+        
+        // Manejar la confirmación de eliminación de cuenta
+        function setupDeleteAccount() {
+            const confirmDeleteCheckbox = document.getElementById('confirmDelete');
+            const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+            const confirmDeleteText = document.getElementById('confirmDeleteText');
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            
+            if (confirmDeleteCheckbox && deleteAccountBtn) {
+                confirmDeleteCheckbox.addEventListener('change', function() {
+                    deleteAccountBtn.disabled = !this.checked;
+                });
+            }
+            
+            if (confirmDeleteText && confirmDeleteBtn) {
+                confirmDeleteText.addEventListener('input', function() {
+                    confirmDeleteBtn.disabled = this.value !== 'ELIMINAR CUENTA';
+                });
+                
+                confirmDeleteBtn.addEventListener('click', function() {
+                    if (confirmDeleteText.value === 'ELIMINAR CUENTA') {
+                        // Aquí iría la lógica para eliminar la cuenta
+                        alert('Tu cuenta ha sido eliminada correctamente.');
+                        // Cerrar el modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('deleteAccountModal'));
+                        modal.hide();
+                        // Cerrar sesión y redirigir
+                        firebase.auth().signOut().then(() => {
+                            window.location.href = '../../index.html';
+                        });
+                    }
+                });
+            }
+        }
+        
+        // Manejar el envío del formulario de perfil
+        function setupProfileForm() {
+            const profileForm = document.getElementById('profileForm');
+            
+            if (profileForm) {
+                profileForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Aquí iría la lógica para actualizar el perfil en Firebase
+                    const userId = firebase.auth().currentUser.uid;
+                    const userData = {
+                        displayName: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
+                        email: document.getElementById('email').value,
+                        // Agregar más campos según sea necesario
+                    };
+                    
+                    // Actualizar en Firestore
+                    db.collection('users').doc(userId).update(userData)
+                        .then(() => {
+                            // Actualizar también el perfil de autenticación
+                            const user = firebase.auth().currentUser;
+                            return user.updateProfile({
+                                displayName: userData.displayName
+                            });
+                        })
+                        .then(() => {
+                            alert('Perfil actualizado correctamente');
+                            // Actualizar la interfaz
+                            document.getElementById('profileName').textContent = userData.displayName;
+                            document.getElementById('userGreeting').textContent = userData.displayName.split(' ')[0];
+                        })
+                        .catch((error) => {
+                            console.error("Error al actualizar el perfil:", error);
+                            alert('Ocurrió un error al actualizar el perfil. Por favor, inténtalo de nuevo.');
+                        });
+                });
+            }
+        }
+        
+        // Manejar el envío del formulario de contraseña
+        function setupPasswordForm() {
+            const passwordForm = document.getElementById('passwordForm');
+            
+            if (passwordForm) {
+                passwordForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const currentPassword = document.getElementById('currentPassword').value;
+                    const newPassword = document.getElementById('newPassword').value;
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    
+                    // Validar que las contraseñas coincidan
+                    if (newPassword !== confirmPassword) {
+                        alert('Las contraseñas no coinciden');
+                        return;
+                    }
+                    
+                    // Validar fortaleza de la contraseña
+                    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+                    if (!passwordRegex.test(newPassword)) {
+                        alert('La contraseña debe tener al menos 8 caracteres, incluyendo mayúsculas, minúsculas y números.');
+                        return;
+                    }
+                    
+                    // Aquí iría la lógica para actualizar la contraseña en Firebase
+                    const user = firebase.auth().currentUser;
+                    const credential = firebase.auth.EmailAuthProvider.credential(
+                        user.email,
+                        currentPassword
+                    );
+                    
+                    // Reautenticar al usuario
+                    user.reauthenticateWithCredential(credential)
+                        .then(() => {
+                            // Actualizar la contraseña
+                            return user.updatePassword(newPassword);
+                        })
+                        .then(() => {
+                            alert('Contraseña actualizada correctamente');
+                            passwordForm.reset();
+                        })
+                        .catch((error) => {
+                            console.error("Error al actualizar la contraseña:", error);
+                            
+                            let errorMessage = 'Ocurrió un error al actualizar la contraseña. ';
+                            
+                            switch (error.code) {
+                                case 'auth/wrong-password':
+                                    errorMessage += 'La contraseña actual es incorrecta.';
+                                    break;
+                                case 'auth/weak-password':
+                                    errorMessage += 'La nueva contraseña es demasiado débil.';
+                                    break;
+                                case 'auth/requires-recent-login':
+                                    errorMessage += 'Por favor, inicia sesión nuevamente antes de cambiar tu contraseña.';
+                                    break;
+                                default:
+                                    errorMessage += 'Por favor, inténtalo de nuevo.';
+                            }
+                            
+                            alert(errorMessage);
+                        });
+                });
+            }
+        }
+        
+        // Inicializar cuando el DOM esté completamente cargado
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar gráfico de progreso
+            initProgressChart();
+            
+            // Inicializar tooltips
+            initTooltips();
+            
+            // Configurar la eliminación de cuenta
+            setupDeleteAccount();
+            
+            // Configurar formulario de perfil
+            setupProfileForm();
+            
+            // Configurar formulario de contraseña
+            setupPasswordForm();
+            
+            // Manejar el botón de editar perfil
+            const editAboutBtn = document.getElementById('editAboutBtn');
+            if (editAboutBtn) {
+                editAboutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const aboutText = document.getElementById('aboutText');
+                    const newAbout = prompt('Edita tu biografía:', aboutText.textContent);
+                    
+                    if (newAbout !== null) {
+                        aboutText.textContent = newAbout;
+                        // Aquí podrías guardar los cambios en Firebase
+                    }
+                });
+            }
+            
+            // Manejar el cambio de pestañas
+            const profileTabs = document.querySelectorAll('#profileTabs button[data-bs-toggle="pill"]');
+            profileTabs.forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function (event) {
+                    // Aquí podrías cargar contenido dinámico cuando se cambia de pestaña
+                    console.log('Cambiando a la pestaña:', event.target.textContent.trim());
+                });
+            });
+            
+            // Manejar la subida de imagen de perfil
+            const profileAvatar = document.getElementById('profileAvatar');
+            if (profileAvatar) {
+                profileAvatar.addEventListener('click', function() {
+                    const fileInput = document.createElement('input');
+                    fileInput.type = 'file';
+                    fileInput.accept = 'image/*';
+                    
+                    fileInput.onchange = (e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                            // Aquí iría la lógica para subir la imagen a Firebase Storage
+                            // y actualizar la URL de la imagen en el perfil del usuario
+                            
+                            // Por ahora, mostramos una vista previa local
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                profileAvatar.src = event.target.result;
+                            };
+                            reader.readAsDataURL(file);
+                            
+                            alert('Imagen de perfil actualizada (cambios guardados localmente)');
+                        }
+                    };
+                    
+                    fileInput.click();
+                });
+                
+                // Agregar indicador de que la imagen es clickeable
+                profileAvatar.style.cursor = 'pointer';
+                profileAvatar.title = 'Haz clic para cambiar la foto de perfil';
+            }
+            
+            // Manejar el botón de cierre de sesión
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    firebase.auth().signOut().then(() => {
+                        // Cierre de sesión exitoso
+                        window.location.href = '../../index.html';
+                    }).catch((error) => {
+                        console.error('Error al cerrar sesión:', error);
+                        alert('Ocurrió un error al cerrar la sesión. Por favor, inténtalo de nuevo.');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

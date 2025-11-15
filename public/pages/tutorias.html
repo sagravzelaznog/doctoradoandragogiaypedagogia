@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorías - Plataforma de Aprendizaje Andragógico</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+    
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    
+    <style>
+        /* Estilos para la sección de tutorías */
+        .tutor-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 25px;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .tutor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tutor-img-container {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .tutor-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .tutor-card:hover .tutor-img {
+            transform: scale(1.05);
+        }
+        
+        .tutor-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #0d6efd;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .tutor-specialty {
+            color: #6c757d;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .tutor-rating {
+            color: #ffc107;
+            margin-bottom: 10px;
+        }
+        
+        .tutor-rating .text-muted {
+            color: #6c757d !important;
+            font-size: 0.9rem;
+        }
+        
+        .tutor-price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #198754;
+            margin-bottom: 15px;
+        }
+        
+        .tutor-availability {
+            font-size: 0.85rem;
+            color: #198754;
+            margin-bottom: 10px;
+        }
+        
+        .tutor-availability i {
+            margin-right: 5px;
+        }
+        
+        .tutor-skills {
+            margin-top: 15px;
+        }
+        
+        .skill-tag {
+            display: inline-block;
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        /* Estilos para el calendario */
+        #calendar {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        .fc .fc-toolbar-title {
+            font-size: 1.5rem;
+            color: #343a40;
+        }
+        
+        .fc .fc-button {
+            background-color: #0d6efd;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+        }
+        
+        .fc .fc-button-primary:not(:disabled).fc-button-active, 
+        .fc .fc-button-primary:not(:disabled):active {
+            background-color: #0b5ed7;
+        }
+        
+        .fc .fc-button-primary:disabled {
+            background-color: #6c757d;
+        }
+        
+        .fc .fc-daygrid-day-number {
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        .fc .fc-day-today {
+            background-color: rgba(13, 110, 253, 0.1) !important;
+        }
+        
+        .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+            color: #0d6efd;
+            font-weight: bold;
+        }
+        
+        /* Estilos para el modal de agendar tutoría */
+        .booking-modal .modal-header {
+            background-color: #0d6efd;
+            color: white;
+            border-bottom: none;
+        }
+        
+        .booking-modal .modal-title {
+            font-weight: 600;
+        }
+        
+        .booking-modal .btn-close {
+            filter: invert(1);
+        }
+        
+        .time-slot {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .time-slot:hover, .time-slot.selected {
+            background-color: #0d6efd;
+            color: white;
+            border-color: #0d6efd;
+        }
+        
+        .time-slot.unavailable {
+            background-color: #f8f9fa;
+            color: #adb5bd;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+        
+        /* Estilos para la sección de búsqueda */
+        .search-section {
+            background-color: #f8f9fa;
+            padding: 30px 0;
+            margin-bottom: 40px;
+            border-radius: 10px;
+        }
+        
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .search-box i {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
+        
+        .search-box input {
+            padding-left: 40px;
+            border-radius: 20px;
+        }
+        
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .filter-tag {
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #dee2e6;
+        }
+        
+        .filter-tag:hover, .filter-tag.active {
+            background-color: #0d6efd;
+            color: white;
+            border-color: #0d6efd;
+        }
+        
+        /* Estilos para la sección de testimonios */
+        .testimonial-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            height: 100%;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 15px;
+            color: #495057;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+        
+        .author-info h6 {
+            margin-bottom: 0;
+            font-weight: 600;
+        }
+        
+        .author-info p {
+            margin-bottom: 0;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        
+        /* Estilos para dispositivos móviles */
+        @media (max-width: 768px) {
+            .tutor-img-container {
+                height: 250px;
+            }
+            
+            .fc-toolbar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .fc-toolbar-title {
+                font-size: 1.2rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="../../index.html">Andragogía Digital</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cursos.html">Cursos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="tutoriales.html">Tutoriales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="tutorias.html">Tutorías</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="acerca.html">Acerca de</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacto.html">Contacto</a>
+                    </li>
+                </ul>
+                <div class="d-flex" id="authButtons">
+                    <a href="login.html" class="btn btn-outline-light me-2" id="loginBtn">Iniciar sesión</a>
+                    <a href="registro.html" class="btn btn-light">Registrarse</a>
+                </div>
+                <div class="dropdown" id="userMenu" style="display: none;">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle"></i> <span id="userEmail"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="perfil.html">Mi perfil</a></li>
+                        <li><a class="dropdown-item" href="dashboard.html">Panel de control</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" id="logoutBtn">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Encabezado de la página -->
+    <header class="bg-primary text-white py-5">
+        <div class="container text-center">
+            <h1 class="display-4">Tutorías Personalizadas</h1>
+            <p class="lead">Conecta con expertos para una experiencia de aprendizaje personalizada</p>
+        </div>
+    </header>
+
+    <!-- Sección de búsqueda -->
+    <section class="search-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="form-control form-control-lg" id="searchTutors" placeholder="Buscar tutores por nombre, especialidad o tema...">
+                    </div>
+                    
+                    <div class="filter-tags">
+                        <span class="filter-tag active">Todos</span>
+                        <span class="filter-tag">Educación</span>
+                        <span class="filter-tag">Tecnología</span>
+                        <span class="filter-tag">Idiomas</span>
+                        <span class="filter-tag">Negocios</span>
+                        <span class="filter-tag">Ciencias</span>
+                        <span class="filter-tag">Artes</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contenido principal -->
+    <main class="py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Lista de tutores -->
+                <div class="col-lg-8">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3>Tutores Disponibles</h3>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Ordenar por: Mejor calificación
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="sortDropdown">
+                                <li><a class="dropdown-item active" href="#">Mejor calificación</a></li>
+                                <li><a class="dropdown-item" href="#">Precio: menor a mayor</a></li>
+                                <li><a class="dropdown-item" href="#">Precio: mayor a menor</a></li>
+                                <li><a class="dropdown-item" href="#">Más populares</a></li>
+                                <li><a class="dropdown-item" href="#">Más recientes</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Tutor 1 -->
+                    <div class="card tutor-card mb-4" data-tutor-id="1" data-categories="educacion,ciencias">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <div class="tutor-img-container">
+                                    <img src="https://source.unsplash.com/random/400x400/?teacher,man" class="tutor-img" alt="Dr. Carlos Mendez">
+                                    <span class="tutor-badge">Disponible</span>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h4 class="card-title mb-1">Dr. Carlos Méndez</h4>
+                                            <p class="tutor-specialty">Profesor de Matemáticas Avanzadas</p>
+                                        </div>
+                                        <div class="tutor-price">$350/h</div>
+                                    </div>
+                                    
+                                    <div class="tutor-rating mb-2">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                        <span class="text-muted ms-1">4.7 (128 reseñas)</span>
+                                    </div>
+                                    
+                                    <p class="card-text">Doctor en Matemáticas con más de 10 años de experiencia docente. Especializado en cálculo diferencial, álgebra lineal y análisis matemático.</p>
+                                    
+                                    <div class="tutor-availability">
+                                        <i class="far fa-clock"></i> Próxima disponibilidad: Hoy, 4:00 PM
+                                    </div>
+                                    
+                                    <div class="tutor-skills">
+                                        <span class="skill-tag">Matemáticas</span>
+                                        <span class="skill-tag">Cálculo</span>
+                                        <span class="skill-tag">Álgebra</span>
+                                        <span class="skill-tag">Análisis</span>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <a href="#" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#tutorProfileModal" data-tutor-id="1">Ver perfil</a>
+                                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#bookingModal" data-tutor-id="1" data-tutor-name="Dr. Carlos Méndez">
+                                            <i class="far fa-calendar-check me-1"></i> Agendar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tutor 2 -->
+                    <div class="card tutor-card mb-4" data-tutor-id="2" data-categories="tecnologia,programacion">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <div class="tutor-img-container">
+                                    <img src="https://source.unsplash.com/random/400x400/?programmer,woman" class="tutor-img" alt="Ing. Laura Ramírez">
+                                    <span class="tutor-badge">Disponible</span>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h4 class="card-title mb-1">Ing. Laura Ramírez</h4>
+                                            <p class="tutor-specialty">Desarrolladora Full Stack</p>
+                                        </div>
+                                        <div class="tutor-price">$400/h</div>
+                                    </div>
+                                    
+                                    <div class="tutor-rating mb-2">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <span class="text-muted ms-1">4.2 (94 reseñas)</span>
+                                    </div>
+                                    
+                                    <p class="card-text">Ingeniera en Sistemas con amplia experiencia en desarrollo web. Enseño programación en JavaScript, Python, React y Node.js de manera práctica y efectiva.</p>
+                                    
+                                    <div class="tutor-availability">
+                                        <i class="far fa-clock"></i> Próxima disponibilidad: Mañana, 10:00 AM
+                                    </div>
+                                    
+                                    <div class="tutor-skills">
+                                        <span class="skill-tag">JavaScript</span>
+                                        <span class="skill-tag">React</span>
+                                        <span class="skill-tag">Node.js</span>
+                                        <span class="skill-tag">Python</span>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <a href="#" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#tutorProfileModal" data-tutor-id="2">Ver perfil</a>
+                                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#bookingModal" data-tutor-id="2" data-tutor-name="Ing. Laura Ramírez">
+                                            <i class="far fa-calendar-check me-1"></i> Agendar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tutor 3 -->
+                    <div class="card tutor-card mb-4" data-tutor-id="3" data-categories="idiomas,educacion">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <div class="tutor-img-container">
+                                    <img src="https://source.unsplash.com/random/400x400/?teacher,woman,portrait" class="tutor-img" alt="Mtra. Ana Torres">
+                                    <span class="tutor-badge">Disponible</span>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h4 class="card-title mb-1">Mtra. Ana Torres</h4>
+                                            <p class="tutor-specialty">Profesora de Inglés como Segunda Lengua</p>
+                                        </div>
+                                        <div class="tutor-price">$300/h</div>
+                                    </div>
+                                    
+                                    <div class="tutor-rating mb-2">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <span class="text-muted ms-1">5.0 (156 reseñas)</span>
+                                    </div>
+                                    
+                                    <p class="card-text">Certificada CELTA con más de 8 años de experiencia enseñando inglés a hablantes de español. Clases personalizadas según tus objetivos y nivel.</p>
+                                    
+                                    <div class="tutor-availability">
+                                        <i class="far fa-clock"></i> Próxima disponibilidad: Hoy, 6:30 PM
+                                    </div>
+                                    
+                                    <div class="tutor-skills">
+                                        <span class="skill-tag">Inglés</span>
+                                        <span class="skill-tag">TOEFL/IELTS</span>
+                                        <span class="skill-tag">Conversación</span>
+                                        <span class="skill-tag">Negocios</span>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <a href="#" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#tutorProfileModal" data-tutor-id="3">Ver perfil</a>
+                                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#bookingModal" data-tutor-id="3" data-tutor-name="Mtra. Ana Torres">
+                                            <i class="far fa-calendar-check me-1"></i> Agendar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Paginación -->
+                    <nav aria-label="Navegación de tutores" class="mt-5">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Siguiente</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <!-- Calendario de disponibilidad -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Calendario de disponibilidad</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="calendar"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Filtros avanzados -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Filtros avanzados</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Precio por hora</label>
+                                <div class="d-flex align-items-center">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Mín" value="0">
+                                    <span class="mx-2">-</span>
+                                    <input type="number" class="form-control form-control-sm" placeholder="Máx" value="1000">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Disponibilidad</label>
+                                <select class="form-select form-select-sm">
+                                    <option selected>Cualquier momento</option>
+                                    <option>Hoy</option>
+                                    <option>Mañana</pronto>
+                                    <option>Esta semana</option>
+                                    <option>Fin de semana</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Calificación mínima</label>
+                                <div class="d-flex align-items-center">
+                                    <input type="range" class="form-range" min="0" max="5" step="0.5" value="3.5">
+                                    <span class="ms-2 text-primary fw-bold">3.5+</span>
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button class="btn btn-primary btn-sm">Aplicar filtros</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonios -->
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Lo que dicen nuestros estudiantes</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="testimonial-card">
+                                <p class="testimonial-text">"Las tutorías con el Dr. Méndez transformaron mi forma de ver las matemáticas. ¡Recomendadísimo!"</p>
+                                <div class="testimonial-author">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Juan Pérez">
+                                    <div class="author-info">
+                                        <h6>Juan Pérez</h6>
+                                        <p>Estudiante de Ingeniería</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="testimonial-card mt-3">
+                                <p class="testimonial-text">"Ana es una excelente profesora de inglés. Sus clases son dinámicas y muy efectivas."</p>
+                                <div class="testimonial-author">
+                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="María González">
+                                    <div class="author-info">
+                                        <h6>María González</h6>
+                                        <p>Profesional</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Sección CTA -->
+    <section class="bg-primary text-white py-5">
+        <div class="container text-center">
+            <h2 class="mb-4">¿Eres un experto en tu campo?</h2>
+            <p class="lead mb-4">Únete a nuestra plataforma como tutor y comparte tus conocimientos con estudiantes de todo el mundo.</p>
+            <a href="#" class="btn btn-light btn-lg">Conviértete en tutor</a>
+        </div>
+    </section>
+
+    <!-- Pie de página -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Plataforma de Aprendizaje Andragógico</h5>
+                    <p>Desarrollado para fortalecer la formación docente y el aprendizaje continuo.</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Enlaces rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="../../index.html" class="text-white">Inicio</a></li>
+                        <li><a href="cursos.html" class="text-white">Cursos</a></li>
+                        <li><a href="tutoriales.html" class="text-white">Tutoriales</a></li>
+                        <li><a href="contacto.html" class="text-white">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Contacto</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope me-2"></i> info@andragogia.edu</li>
+                        <li><i class="fas fa-phone me-2"></i> +52 123 456 7890</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p class="mb-0">&copy; 2023 Plataforma de Aprendizaje Andragógico. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Perfil del Tutor -->
+    <div class="modal fade" id="tutorProfileModal" tabindex="-1" aria-labelledby="tutorProfileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tutorProfileModalLabel">Perfil del Tutor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body" id="tutorProfileContent">
+                    <!-- El contenido se cargará dinámicamente mediante JavaScript -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="bookFromProfileBtn">Agendar tutoría</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Agendamiento -->
+    <div class="modal fade booking-modal" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookingModalLabel">Agendar Tutoría</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Tutor</label>
+                        <input type="text" class="form-control" id="tutorName" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="bookingDate">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Horarios disponibles</label>
+                        <div id="timeSlots">
+                            <div class="time-slot">9:00 AM - 10:00 AM</div>
+                            <div class="time-slot">10:30 AM - 11:30 AM</div>
+                            <div class="time-slot">1:00 PM - 2:00 PM</div>
+                            <div class="time-slot unavailable">3:00 PM - 4:00 PM</div>
+                            <div class="time-slot">4:30 PM - 5:30 PM</div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Duración</label>
+                        <select class="form-select" id="durationSelect">
+                            <option value="30">30 minutos</option>
+                            <option value="60" selected>1 hora</option>
+                            <option value="90">1 hora 30 minutos</option>
+                            <option value="120">2 horas</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tema o preguntas específicas</label>
+                        <textarea class="form-control" rows="3" placeholder="Describe brevemente sobre qué te gustaría recibir asesoría"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Confirmar cita</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS y dependencias -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/es.js"></script>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Scripts personalizados -->
+    <script type="module" src="../../assets/js/app.js"></script>
+    <script>
+        // Inicializar FullCalendar
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'es',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: [
+                    {
+                        title: 'Disponible',
+                        start: new Date(),
+                        end: new Date(),
+                        color: '#198754',
+                        textColor: 'white',
+                        allDay: true
+                    },
+                    {
+                        title: 'Sesión con Juan',
+                        start: '2023-11-20T10:00:00',
+                        end: '2023-11-20T11:00:00',
+                        color: '#dc3545'
+                    },
+                    {
+                        title: 'Disponible',
+                        start: '2023-11-20T14:00:00',
+                        end: '2023-11-20T16:00:00',
+                        color: '#198754'
+                    }
+                ],
+                dateClick: function(info) {
+                    // Aquí puedes agregar lógica para manejar clics en fechas
+                    console.log('Fecha clickeada: ' + info.dateStr);
+                },
+                eventClick: function(info) {
+                    // Aquí puedes agregar lógica para manejar clics en eventos
+                    console.log('Evento: ' + info.event.title);
+                }
+            });
+            calendar.render();
+            
+            // Manejar el modal de agendamiento
+            const bookingModal = document.getElementById('bookingModal');
+            if (bookingModal) {
+                bookingModal.addEventListener('show.bs.modal', function(event) {
+                    const button = event.relatedTarget;
+                    const tutorName = button.getAttribute('data-tutor-name');
+                    const modalTitle = bookingModal.querySelector('.modal-title');
+                    const tutorNameInput = bookingModal.querySelector('#tutorName');
+                    
+                    modalTitle.textContent = 'Agendar con ' + tutorName;
+                    tutorNameInput.value = tutorName;
+                });
+            }
+            
+            // Manejar la selección de horarios
+            const timeSlots = document.querySelectorAll('.time-slot:not(.unavailable)');
+            timeSlots.forEach(slot => {
+                slot.addEventListener('click', function() {
+                    // Remover la clase 'selected' de todos los slots
+                    timeSlots.forEach(s => s.classList.remove('selected'));
+                    // Agregar la clase 'selected' al slot clickeado
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Manejar el filtrado de tutores
+            const filterTags = document.querySelectorAll('.filter-tag');
+            filterTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    // Remover la clase 'active' de todos los tags
+                    filterTags.forEach(t => t.classList.remove('active'));
+                    // Agregar la clase 'active' al tag clickeado
+                    this.classList.add('active');
+                    
+                    // Aquí iría la lógica para filtrar los tutores
+                    // Por ahora solo mostramos un mensaje en la consola
+                    console.log('Filtrando por: ' + this.textContent);
+                });
+            });
+            
+            // Manejar la búsqueda de tutores
+            const searchInput = document.getElementById('searchTutors');
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    const tutorCards = document.querySelectorAll('.tutor-card');
+                    
+                    tutorCards.forEach(card => {
+                        const tutorName = card.querySelector('.card-title').textContent.toLowerCase();
+                        const tutorSpecialty = card.querySelector('.tutor-specialty').textContent.toLowerCase();
+                        const tutorSkills = card.querySelector('.tutor-skills').textContent.toLowerCase();
+                        
+                        if (tutorName.includes(searchTerm) || 
+                            tutorSpecialty.includes(searchTerm) || 
+                            tutorSkills.includes(searchTerm)) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            }
+            
+            // Cargar datos del tutor en el modal de perfil
+            const tutorProfileModal = document.getElementById('tutorProfileModal');
+            if (tutorProfileModal) {
+                tutorProfileModal.addEventListener('show.bs.modal', function(event) {
+                    const button = event.relatedTarget;
+                    const tutorId = button.getAttribute('data-tutor-id');
+                    const tutorProfileContent = document.getElementById('tutorProfileContent');
+                    
+                    // Aquí iría una llamada a la API para obtener los datos del tutor
+                    // Por ahora usamos datos de ejemplo
+                    const tutorData = getTutorData(tutorId);
+                    
+                    // Construir el HTML del perfil del tutor
+                    let html = `
+                        <div class="row">
+                            <div class="col-md-4 text-center">
+                                <img src="${tutorData.image}" class="img-fluid rounded-circle mb-3" alt="${tutorData.name}" style="width: 150px; height: 150px; object-fit: cover;">
+                                <h4>${tutorData.name}</h4>
+                                <p class="text-muted">${tutorData.title}</p>
+                                <div class="mb-3">
+                                    ${getRatingStars(tutorData.rating)}
+                                    <span class="text-muted ms-1">${tutorData.rating} (${tutorData.reviews} reseñas)</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookingModal" data-tutor-id="${tutorData.id}" data-tutor-name="${tutorData.name}">
+                                        <i class="far fa-calendar-check me-1"></i> Agendar tutoría
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <h5>Acerca de mí</h5>
+                                <p>${tutorData.about}</p>
+                                
+                                <h5 class="mt-4">Experiencia</h5>
+                                <ul class="list-unstyled">
+                                    ${tutorData.experience.map(exp => `
+                                        <li class="mb-2">
+                                            <strong>${exp.role}</strong> en ${exp.company}<br>
+                                            <small class="text-muted">${exp.period}</small>
+                                            <p class="mb-0">${exp.description}</p>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                                
+                                <h5 class="mt-4">Educación</h5>
+                                <ul class="list-unstyled">
+                                    ${tutorData.education.map(edu => `
+                                        <li class="mb-2">
+                                            <strong>${edu.degree}</strong> - ${edu.institution}<br>
+                                            <small class="text-muted">${edu.period}</small>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                                
+                                <h5 class="mt-4">Habilidades</h5>
+                                <div class="d-flex flex-wrap gap-2">
+                                    ${tutorData.skills.map(skill => `
+                                        <span class="badge bg-primary">${skill}</span>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    tutorProfileContent.innerHTML = html;
+                    
+                    // Actualizar el botón de agendar del modal de perfil
+                    const bookFromProfileBtn = document.getElementById('bookFromProfileBtn');
+                    if (bookFromProfileBtn) {
+                        bookFromProfileBtn.onclick = function() {
+                            const modal = bootstrap.Modal.getInstance(tutorProfileModal);
+                            modal.hide();
+                            
+                            const bookingModal = new bootstrap.Modal(document.getElementById('bookingModal'));
+                            const tutorNameInput = document.querySelector('#bookingModal #tutorName');
+                            const bookingTitle = document.querySelector('#bookingModal .modal-title');
+                            
+                            tutorNameInput.value = tutorData.name;
+                            bookingTitle.textContent = 'Agendar con ' + tutorData.name;
+                            
+                            // Aquí podrías agregar lógica para pre-seleccionar el tutor en el modal de agendamiento
+                            
+                            bookingModal.show();
+                        };
+                    }
+                });
+            }
+            
+            // Función auxiliar para obtener datos de ejemplo del tutor
+            function getTutorData(tutorId) {
+                const tutors = {
+                    '1': {
+                        id: '1',
+                        name: 'Dr. Carlos Méndez',
+                        title: 'Profesor de Matemáticas Avanzadas',
+                        image: 'https://source.unsplash.com/random/400x400/?teacher,man',
+                        rating: 4.7,
+                        reviews: 128,
+                        about: 'Doctor en Matemáticas con más de 10 años de experiencia docente. Especializado en cálculo diferencial, álgebra lineal y análisis matemático. Mi enfoque de enseñanza se centra en hacer que las matemáticas sean accesibles y emocionantes para todos los estudiantes, independientemente de su nivel de habilidad.',
+                        experience: [
+                            {
+                                role: 'Profesor Titular',
+                                company: 'Universidad Nacional Autónoma',
+                                period: '2015 - Presente',
+                                description: 'Imparto cursos de matemáticas avanzadas a nivel de licenciatura y posgrado, superviso tesis y participo en proyectos de investigación.'
+                            },
+                            {
+                                role: 'Investigador',
+                                company: 'Instituto de Matemáticas',
+                                period: '2012 - 2015',
+                                description: 'Investigación en teoría de números y sus aplicaciones en criptografía.'
+                            }
+                        ],
+                        education: [
+                            {
+                                degree: 'Doctorado en Matemáticas',
+                                institution: 'Universidad Nacional Autónoma',
+                                period: '2008 - 2012'
+                            },
+                            {
+                                degree: 'Maestría en Matemáticas',
+                                institution: 'Instituto Tecnológico de Estudios Superiores',
+                                period: '2006 - 2008'
+                            },
+                            {
+                                degree: 'Licenciatura en Matemáticas',
+                                institution: 'Universidad Autónoma Metropolitana',
+                                period: '2001 - 2005'
+                            }
+                        ],
+                        skills: ['Cálculo', 'Álgebra Lineal', 'Análisis Matemático', 'Ecuaciones Diferenciales', 'Teoría de Números', 'Enseñanza Personalizada']
+                    },
+                    '2': {
+                        id: '2',
+                        name: 'Ing. Laura Ramírez',
+                        title: 'Desarrolladora Full Stack',
+                        image: 'https://source.unsplash.com/random/400x400/?programmer,woman',
+                        rating: 4.2,
+                        reviews: 94,
+                        about: 'Ingeniera en Sistemas con más de 8 años de experiencia en desarrollo web. Me apasiona enseñar programación de manera práctica y efectiva, ayudando a mis estudiantes a construir proyectos reales desde el primer día.',
+                        experience: [
+                            {
+                                role: 'Desarrolladora Senior',
+                                company: 'Tech Solutions Inc.',
+                                period: '2019 - Presente',
+                                description: 'Lidero un equipo de desarrolladores en la creación de aplicaciones web escalables utilizando tecnologías modernas como React, Node.js y MongoDB.'
+                            },
+                            {
+                                role: 'Desarrolladora Frontend',
+                                company: 'Digital Creations',
+                                period: '2016 - 2019',
+                                description: 'Desarrollo de interfaces de usuario responsivas y accesibles utilizando HTML5, CSS3 y JavaScript.'
+                            },
+                            {
+                                role: 'Practicante de Desarrollo',
+                                company: 'WebStart',
+                                period: '2015 - 2016',
+                                description: 'Participé en el desarrollo de sitios web para clientes, adquiriendo experiencia en el ciclo completo de desarrollo.'
+                            }
+                        ],
+                        education: [
+                            {
+                                degree: 'Ingeniería en Sistemas Computacionales',
+                                institution: 'Instituto Tecnológico de Estudios Superiores',
+                                period: '2011 - 2015'
+                            },
+                            {
+                                degree: 'Certificación en Desarrollo Web Full Stack',
+                                institution: 'Platzi',
+                                period: '2018'
+                            },
+                            {
+                                degree: 'Certificación en React Avanzado',
+                                institution: 'Udemy',
+                                period: '2019'
+                            }
+                        ],
+                        skills: ['JavaScript', 'React', 'Node.js', 'Express', 'MongoDB', 'HTML5', 'CSS3', 'Git', 'APIs REST']
+                    },
+                    '3': {
+                        id: '3',
+                        name: 'Mtra. Ana Torres',
+                        title: 'Profesora de Inglés como Segunda Lengua',
+                        image: 'https://source.unsplash.com/random/400x400/?teacher,woman,portrait',
+                        rating: 5.0,
+                        reviews: 156,
+                        about: 'Certificada CELTA con más de 8 años de experiencia enseñando inglés a hablantes de español. Mis clases son dinámicas, personalizadas y enfocadas en las necesidades específicas de cada estudiante. Creo firmemente en la inmersión lingüística y cultural para un aprendizaje efectivo.',
+                        experience: [
+                            {
+                                role: 'Profesora de Inglés',
+                                company: 'Instituto de Idiomas Modernos',
+                                period: '2018 - Presente',
+                                description: 'Imparto clases de inglés general y de negocios a adultos, preparación para exámenes internacionales y talleres de conversación.'
+                            },
+                            {
+                                role: 'Tutora de Inglés en Línea',
+                                company: 'TutorMe',
+                                period: '2016 - Presente',
+                                description: 'Clases particulares personalizadas para estudiantes de todo el mundo, enfocadas en conversación, gramática y preparación para exámenes.'
+                            },
+                            {
+                                role: 'Asistente de Enseñanza de Inglés',
+                                company: 'Centro de Idiomas UVM',
+                                period: '2015 - 2018',
+                                description: 'Asistí en la planificación e impartición de clases de inglés a estudiantes universitarios.'
+                            }
+                        ],
+                        education: [
+                            {
+                                degree: 'Maestría en Enseñanza del Inglés como Lengua Extranjera',
+                                institution: 'Universidad Nacional Autónoma',
+                                period: '2016 - 2018'
+                            },
+                            {
+                                degree: 'Licenciatura en Lenguas Modernas',
+                                institution: 'Universidad del Valle de México',
+                                period: '2011 - 2015'
+                            },
+                            {
+                                degree: 'Certificación CELTA',
+                                institution: 'Cambridge Assessment English',
+                                period: '2015'
+                            },
+                            {
+                                degree: 'Certificación TKT (Teaching Knowledge Test)',
+                                institution: 'Cambridge Assessment English',
+                                period: '2016'
+                            }
+                        ],
+                        skills: ['Enseñanza de Inglés', 'Preparación para TOEFL/IELTS', 'Inglés de Negocios', 'Fonética', 'Enseñanza en Línea', 'Diseño de Materiales Educativos']
+                    }
+                };
+                
+                return tutors[tutorId] || tutors['1']; // Por defecto devuelve el primer tutor si no se encuentra el ID
+            }
+            
+            // Función auxiliar para generar estrellas de calificación
+            function getRatingStars(rating) {
+                const fullStars = Math.floor(rating);
+                const hasHalfStar = rating % 1 >= 0.5;
+                let stars = '';
+                
+                // Estrellas llenas
+                for (let i = 0; i < fullStars; i++) {
+                    stars += '<i class="fas fa-star text-warning"></i>';
+                }
+                
+                // Media estrella si es necesario
+                if (hasHalfStar) {
+                    stars += '<i class="fas fa-star-half-alt text-warning"></i>';
+                }
+                
+                // Estrellas vacías
+                const emptyStars = 5 - Math.ceil(rating);
+                for (let i = 0; i < emptyStars; i++) {
+                    stars += '<i class="far fa-star text-warning"></i>';
+                }
+                
+                return stars;
+            }
+        });
+    </script>
+</body>
+</html>

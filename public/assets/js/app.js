@@ -266,10 +266,13 @@ async function handleForgotPassword(e) {
 // Inicializar la aplicación cuando el DOM esté completamente cargado
 document.addEventListener('DOMContentLoaded', initApp);
 
-// Exportar funciones para su uso en otros archivos
-export { 
-    state, 
+// Hacer las funciones disponibles globalmente
+window.appFunctions = {
+    checkAuthState,
     updateUI,
-    getCurrentUser,
-    isAuthenticated
+    handleLogin,
+    handleRegister,
+    handleLogout,
+    handleGoogleLogin,
+    handleForgotPassword
 };

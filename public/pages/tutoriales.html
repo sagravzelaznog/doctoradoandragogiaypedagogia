@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <!-- Estilos personalizados -->
-    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
     
     <style>
         .tutorial-card {
@@ -192,14 +192,14 @@
     <!-- Barra de navegación -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
-            <a class="navbar-brand" href="../../index.html">Andragogía Digital</a>
+            <a class="navbar-brand" href="../index.html">Andragogía Digital</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="../../index.html">Inicio</a>
+                        <a class="nav-link" href="../index.html">Inicio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="cursos.html">Cursos</a>
@@ -671,6 +671,7 @@
     </footer>
 
     <!-- Bootstrap JS y dependencias -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- Firebase -->
@@ -679,7 +680,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
     
     <!-- Scripts personalizados -->
-    <script type="module" src="../../assets/js/app.js"></script>
+    <script src="../assets/js/config/firebase-config.js"></script>
+    <script src="../assets/js/app.js"></script>
     <script>
         // Función para filtrar tutoriales
         function filterTutorials() {

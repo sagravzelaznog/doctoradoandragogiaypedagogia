@@ -20,6 +20,31 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../../assets/css/styles.css">
     
+    <!-- Firebase Initialization Script -->
+    <script>
+        // Make sure Firebase is properly initialized before any other scripts run
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!firebase.apps.length) {
+                // This should match your firebase-config.js
+                const firebaseConfig = {
+                    apiKey: "AIzaSyATDwc4TWsJL9raHdgETKK8v4rn7qxySbo",
+                    authDomain: "doctoradopedayandragogia.firebaseapp.com",
+                    projectId: "doctoradopedayandragogia",
+                    storageBucket: "doctoradopedayandragogia.firebasestorage.app",
+                    messagingSenderId: "706516439782",
+                    appId: "1:706516439782:web:e3da95cd3c36481fbb2127",
+                    measurementId: "G-2ZBRR3TQ42"
+                };
+                firebase.initializeApp(firebaseConfig);
+            }
+            
+            // Make firebase available globally
+            window.auth = firebase.auth();
+            window.db = firebase.firestore();
+            window.storage = firebase.storage();
+        });
+    </script>
+    
     <style>
         :root {
             --sidebar-width: 250px;
@@ -688,24 +713,26 @@
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/es.js"></script>
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
-    <script type="module" src="../../assets/js/app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-storage-compat.js"></script>
+    
+    <!-- Firebase Config -->
+    <script src="../../assets/js/config/firebase-config.js"></script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- FullCalendar -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/es.js"></script>
+    
+    <!-- App JS -->
+    <script src="../../assets/js/app.js"></script>
     
     <script>
-        // Inicializar Firebase
-        const firebaseConfig = {
-            // Tu configuración de Firebase
-        };
-        
-        // Inicializar Firebase si no está ya inicializado
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
         }
         
         // Referencia a Firestore
